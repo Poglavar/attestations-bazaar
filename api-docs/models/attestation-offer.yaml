@@ -1,0 +1,71 @@
+title: Attestation Offer / Request / Bid / Proposal / Bounty (what is the best word here?) 
+type: object
+description: Data model for Attestation Offers
+required:
+  - chain
+  - contract
+  - id
+  - creator
+  - eas_schema_id
+  - bounty (can this be part of the contract which is executed when an attestation is signed?) No I don't think so
+  - creation_date
+  - expiry_date
+  - autoaccept
+  - status
+additionalProperties: false
+properties:
+  chain:
+    description: The blockchain the NFT collection lives on. It is part of the unique identifier of every NFT.
+      Every NFT can be uniquely identified by chain+contract_address+nft_serial_number/id
+    type: string
+    example: Ethereum
+  contract:
+    description: The ERC721 NFT contract of the attestation requests
+    type: string
+    example: '0x85a091830609454acc8234e63fa2225bd6168a18'
+  id:
+    description: The id of the NFT within the collection
+    example: 1
+    type: integer
+  eas_schema_id:
+    description: A UUID that identifies the EAS schema that the attestation offer is based on
+    type: string
+    example: 
+  creator:
+    description: The creator/issuer of the Attestation Offer
+    type: string
+    format: address
+    example: '0x85a091830609454acc8234e63fa2225bd6168a18'
+  to:
+    description: Optional. The recipient of the attestation offer
+    example: '0x85a091830609454acc8234e63fa2225bd6168a18'
+    type: string
+    format: address
+  bounty_amount: # can bounty be complex? Like, you get multiple things? Maybe an ERC-6551 loaded with stuff?
+    description: This is either the amount offered or amount requested, depending on whether the attestation proposal is a request or an offer
+    type: number
+    example: 3.00
+  bounty_contract:
+    description: The contract that the bounty is paid in
+    type: string
+    example: '0x85a091830609454acc8234e63fa2225bd6168a18' # USDC
+  creation_date:
+    description: The date when the attestation proposal was created
+    example: '2022-01-01'
+    type: string
+    format: date-time
+  expiry_date:
+    description: The date when the attestation proposal expires
+    example: '2022-01-05'
+    type: string
+    format: date-time
+  autoaccept:
+    description: Whether the attestation proposal can be automatically accepted by Attestors
+    type: boolean
+    example: true
+  status:
+    description: The status of the proposal. Can be 'active', 'closed'
+    example: Active
+    type:
+      - string
+      - null

@@ -1,0 +1,14 @@
+type Attestation @entity {
+  id: String!
+  data: Bytes!
+  schema: Schema
+  recipient: Bytes! # address
+  attester: Bytes! # address
+  time: BigInt!
+  expirationTime: BigInt!
+  revocationTime: BigInt!
+  refUID: Bytes!
+  revoked: Boolean!
+  txid: Bytes!
+  chainID: Int!
+}

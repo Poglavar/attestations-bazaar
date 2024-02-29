@@ -1,0 +1,10 @@
+type Schema @entity {
+  id: String!
+  schema: String!
+  creator: String! # address
+  resolver: String! # address
+  time: BigInt!
+  revocable: Boolean!
+  txid: Bytes!
+  chainID: Int!
+}
