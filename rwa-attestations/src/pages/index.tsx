@@ -1,17 +1,16 @@
-import MainNav from "@/components/main-nav";
-import { Inter } from "next/font/google";
+import MainNav from '@/components/main-nav'
+import { Inter } from 'next/font/google'
 
-
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
-  return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between mx-auto max-w-7xl py-4 sm:py-12 ${inter.className}`}
-    >
-      <header>
-        <MainNav />
-      </header>
-    </main>
-  );
+    return (
+        <main
+            className={`mx-auto flex min-h-screen max-w-7xl flex-col items-center justify-between py-4 sm:py-12 ${inter.className}`}
+        >
+            <header>
+                <MainNav />
+            </header>
+        </main>
+    )
 }
