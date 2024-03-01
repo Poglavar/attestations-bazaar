@@ -2,12 +2,27 @@
 // https://docs.attest.sh/docs/developer-tools/eas-sdk
 const { EAS, Offchain, SchemaEncoder, SchemaRegistry } = require("@ethereum-attestation-service/eas-sdk")
 const { ethers } = require('ethers')
+const fs = require('fs');
 
 console.log(ethers)
 
+const readFromSchemaFile = async (filename) => {
+    try {
+        const data = await fs.readFile(filename, 'utf8');
+        const lines = data.split('\n');
+
+        const index = Math.floor(Math.random() * lines.length);
+        return String(lines[index]);
+        } catch(err) {
+        console.error("Error while reading file: ", err);
+        return '';
+        }
+}
+
 const createAttestation = async (eas) => {
     // Initialize SchemaEncoder with the schema string
-    const schemaEncoder = new SchemaEncoder("uint256 eventId, uint8 voteIndex")
+    const selectedScehmaEncoder = await readFromSchemaFile('backend/model/schema/schema_encoder')
+    const schemaEncoder = new SchemaEncoder(selectedScehmaEncoder)
     const encodedData = schemaEncoder.encodeData([
         { name: "eventId", value: 1, type: "uint256" },
         { name: "voteIndex", value: 1, type: "uint8" },
@@ -26,6 +41,30 @@ const createAttestation = async (eas) => {
 
     const newAttestationUID = await tx.wait()
     console.log("New attestation UID:", newAttestationUID)
+}
+
+const generateAccounts = (numAccounts, filename) => {
+    const accounts = [];
+
+    for (let i = 0; i < numAccounts; i++) {
+        const wallet = ethers.Wallet.createRandom();
+        const account = {
+            address: wallet.address,
+            privateKey: wallet.privateKey,
+            mnemonic: wallet.mnemonic.phrase
+        };
+        accounts.push(account);
+    }
+
+    const accountsString = accounts.map(account => JSON.stringify(account)).join('\n');
+
+    fs.writeFile(filename, accountsString, (err) => {
+        if (err) {
+            console.error('Error writing to file:', err);
+        } else {
+            console.log(`Successfully generated ${numAccounts} accounts and saved them to ${filename}`);
+        }
+    });
 }
 
 
@@ -47,3 +86,5 @@ const main = async () => {
 }
 
 main()
+
+// generateAccounts(200, 'eth_accounts.txt');
