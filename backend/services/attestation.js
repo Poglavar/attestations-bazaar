@@ -3,12 +3,6 @@ import { ethers } from 'ethers';
 import { getSchemaRecord } from './schema.js';
 import 'dotenv/config';
 
-const encodeDataItems = [
-    { name: "eventId", value: 1, type: "uint256" },
-    { name: "voteIndex", value: 1, type: "uint8" },
-    // Add more items as needed, according to the schema
-];
-
 async function createAttestation(schemaUID, encodeDataItems, recipient, expirationTime,
                                  revocable, referencedAttestationUID) {
     try {
@@ -26,15 +20,12 @@ async function createAttestation(schemaUID, encodeDataItems, recipient, expirati
 
         // Encode attestation data
         const schemaEncoder = new SchemaEncoder('int256 test1Id, int256 voteIndex');
-        const encodedData = schemaEncoder.encodeData([
-                {name: 'test1Id', value: 1, type: 'int256'},
-                {name: 'voteIndex', value: 2, type: 'int256'},
-        ]
-            // encodeDataItems.map(item => ({
-            //     name: item.name,
-            //     value: item.value,
-            //     type: item.type,
-            // }))
+        const encodedData = schemaEncoder.encodeData(
+            encodeDataItems.map(item => ({
+                name: item.name,
+                value: item.value,
+                type: item.type,
+            }))
         );
 
         const attestationData = {
@@ -64,7 +55,8 @@ async function createAttestation(schemaUID, encodeDataItems, recipient, expirati
 }
 
 const dataItems = [
-    { name: "isHonest", value: true, type: "bool" },
+    {name: 'test1Id', value: 1, type: 'int256'},
+    {name: 'voteIndex', value: 2, type: 'int256'},
 ];
 
 createAttestation('0x50e562002c209091c649e3ba5d6a89cad7b790a32cc235cfda5ea13b064b033c', dataItems, '', 0, false)
