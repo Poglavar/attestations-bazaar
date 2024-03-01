@@ -1,7 +1,20 @@
 import React, { useEffect, useState } from 'react'
-import { Alchemy, Network } from 'alchemy-sdk'
-import Image from 'next/image'
-import { CardItem, CardBody, CardContainer } from './ui/3d-card'
+import { Alchemy, Network, OwnedNft } from 'alchemy-sdk'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import NFTCard from './nft-card'
+
+const organizeNFTsByCollection = (nfts: OwnedNft[]) => {
+  return nfts.reduce((acc, nft) => {
+    if (nft.image && nft.image.originalUrl) {
+      const collectionName = nft.collection.name
+      if (!acc[collectionName]) {
+        acc[collectionName] = []
+      }
+      acc[collectionName].push(nft)
+    }
+    return acc
+  }, {})
+}
 
 export default function NFTGrid() {
   const [nfts, setNFTs] = useState([])
@@ -15,66 +28,48 @@ export default function NFTGrid() {
 
     async function fetchNFTs() {
       try {
-        const ownerAddress = '0xFCaAAB590fC876ef9be2D00178e9C78A4Edab825' // Replace with the actual owner address (from thirdweb)
+        const ownerAddress = '0xFCaAAB590fC876ef9be2D00178e9C78A4Edab825' // Replace with the actual owner address
         const { ownedNfts } = await alchemy.nft.getNftsForOwner(ownerAddress)
-        setNFTs(ownedNfts)
+        const filteredNfts = ownedNfts.filter(
+          (nft) => nft.image && nft.image.originalUrl
+        )
+        setNFTs(organizeNFTsByCollection(filteredNfts))
+        console.log(filteredNfts)
       } catch (error) {
         console.error('Failed to fetch NFTs:', error)
       }
     }
 
     fetchNFTs()
-  }, []) // Empty dependency array means this effect runs once on mount
+  }, [])
 
   return (
-    <div className="p-4">
-      <h2 className="mb-4 text-2xl font-bold">NFTs in Wallet</h2>
-      <div className="grid grid-cols-3 gap-4">
-        {nfts.map((nft, index) => (
-          <CardContainer className="inter-var" key={index}>
-            <CardBody className="group/card relative h-auto  w-auto rounded-xl border border-black/[0.1] bg-gray-50 p-6 dark:border-white/[0.2] dark:bg-black dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1]  ">
-              <CardItem
-                translateZ="50"
-                className="text-xl font-bold text-neutral-600 dark:text-white"
-              >
-                {nft.name}
-              </CardItem>
-              <CardItem
-                as="p"
-                translateZ="60"
-                className="mt-2 max-w-sm text-sm text-neutral-500 dark:text-neutral-300"
-              >
-                Hover over this card to unleash the power of CSS perspective
-              </CardItem>
-              <CardItem translateZ="100" className="mt-4 w-full">
-                <Image
-                  src={nft.image.originalUrl}
-                  height="1000"
-                  width="1000"
-                  className="h-80 w-full rounded-xl object-cover group-hover/card:shadow-xl"
-                  alt={nft.title || 'NFT Image'}
-                />
-              </CardItem>
-              <div className="mt-6 flex items-center justify-between">
-                <CardItem
-                  translateZ={20}
-                  as="button"
-                  className="rounded-xl px-4 py-2 text-xs font-normal dark:text-white"
-                >
-                  View Attestations →
-                </CardItem>
-                <CardItem
-                  translateZ={20}
-                  as="button"
-                  className="rounded-xl bg-black px-4 py-2 text-xs font-bold text-white dark:bg-white dark:text-black"
-                >
-                  Sign up
-                </CardItem>
-              </div>
-            </CardBody>
-          </CardContainer>
+    <Tabs defaultValue="all" className="w-full px-4">
+      <TabsList className="mx-auto my-4 w-full bg-transparent">
+        {Object.keys(nfts).map((collectionName) => (
+          <TabsTrigger key={collectionName} value={collectionName}>
+            {collectionName}
+          </TabsTrigger>
         ))}
-      </div>
-    </div>
+      </TabsList>
+
+      {Object.entries(nfts).map(([collectionName, collectionNFTs]) => (
+        <TabsContent key={collectionName} value={collectionName}>
+          <div className="grid-cols-1 sm:grid-cols-2 grid gap-4 md:grid-cols-3">
+            {collectionNFTs.map((nft, index) => (
+              <NFTCard key={index} nft={nft} />
+            ))}
+          </div>
+        </TabsContent>
+      ))}
+    </Tabs>
+    // <div className="p-4">
+    //   <h2 className="mb-4 ml-4 text-2xl font-bold">NFTs in Wallet</h2>
+    //   <div className="grid grid-cols-3 gap-4">
+    //     {nfts.map((nft, index) => (
+    //       <NFTCard key={index} nft={nft} />
+    //     ))}
+    //   </div>
+    // </div>
   )
 }
