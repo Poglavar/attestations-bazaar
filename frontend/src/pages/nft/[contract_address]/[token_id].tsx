@@ -2,7 +2,6 @@ import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { Alchemy, Network } from 'alchemy-sdk'
 import NFTDetailPage from '@/components/nft-detail-page'
-import { Inter } from 'next/font/google'
 
 const NFTPage = () => {
   const router = useRouter()

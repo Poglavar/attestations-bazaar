@@ -6,7 +6,7 @@ export default function Layout({ children }) {
   return (
     <div className="background">
       <main
-        className={` mx-auto flex min-h-screen max-w-7xl flex-col items-center justify-between`}
+        className={` mx-auto flex min-h-screen max-w-7xl flex-col items-center justify-between pb-6 sm:pb-24`}
       >
         <Logo />
         <MainNav />
