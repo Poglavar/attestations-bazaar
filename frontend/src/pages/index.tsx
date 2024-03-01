@@ -3,7 +3,5 @@ import NFTGrid from '@/components/nft-grid'
 import Logo from '@/components/ui/logo'
 
 export default function Home() {
-  return (
-        <NFTGrid />
-  )
+  return <NFTGrid />
 }

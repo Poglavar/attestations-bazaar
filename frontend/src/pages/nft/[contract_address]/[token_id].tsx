@@ -20,7 +20,10 @@ const NFTPage = () => {
 
     async function fetchNFT() {
       try {
-        const nftData = await alchemy.nft.getNftMetadata(contract_address,token_id)
+        const nftData = await alchemy.nft.getNftMetadata(
+          contract_address,
+          token_id
+        )
         console.log(nftData)
         setNft(nftData)
       } catch (error) {
@@ -39,7 +42,7 @@ const NFTPage = () => {
     <main
       className={`mx-auto flex min-h-screen max-w-7xl flex-col items-center justify-between`}
     >
-      <div className="bg-seance-900 mx-auto flex grid min-h-screen w-screen max-w-7xl rounded-lg bg-ebony-950 shadow-2xl">
+      <div className="mx-auto flex grid min-h-screen w-screen max-w-7xl rounded-lg bg-ebony-950 bg-seance-900 shadow-2xl">
         <NFTDetailPage nft={nft} />;
       </div>
     </main>

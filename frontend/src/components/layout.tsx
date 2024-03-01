@@ -8,7 +8,7 @@ export default function Layout({ children }) {
     >
       <Logo />
       <MainNav />
-      <div className="bg-seance-900 mx-auto flex grid min-h-screen w-screen max-w-7xl rounded-lg bg-ebony-950 shadow-2xl">
+      <div className="mx-auto flex grid min-h-screen w-screen max-w-7xl rounded-lg bg-ebony-950 bg-seance-900 shadow-2xl">
         {children}
       </div>
     </main>

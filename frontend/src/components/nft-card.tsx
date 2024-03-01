@@ -25,7 +25,7 @@ const NFTCard = ({ nft }) => {
             src={nft.image.originalUrl}
             height="1000"
             width="1000"
-            className="h-60 max-w-200 rounded-xl object-cover group-hover/card:shadow-xl"
+            className="max-w-200 h-60 rounded-xl object-cover group-hover/card:shadow-xl"
             alt={nft.title || 'NFT Image'}
           />
         </CardItem>

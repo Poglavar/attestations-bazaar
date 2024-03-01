@@ -11,7 +11,6 @@ import Layout from '@/components/layout'
 
 const inter = Inter({ subsets: ['latin'] })
 
-
 const activeChain = 1
 
 export default function App({ Component, pageProps }: AppProps) {

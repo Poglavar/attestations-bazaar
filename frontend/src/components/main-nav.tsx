@@ -10,7 +10,7 @@ import Link from 'next/link'
 export default function MainNav() {
   return (
     <header className=" py-2 sm:py-6">
-      <NavigationMenu className="max-w-7xl flex flex-cols items-between w-screen">
+      <NavigationMenu className="flex-cols items-between flex w-screen max-w-7xl">
         <NavigationMenuList>
           <Link href="/attestations" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>

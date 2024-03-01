@@ -23,7 +23,6 @@ function NFTDetailPage({ nft }) {
 
         <div className="md:ml-8 md:w-2/3">
           {/* Replace with Shadcn Tabs component */}
-          
         </div>
       </div>
     </div>
