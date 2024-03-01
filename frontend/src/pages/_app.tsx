@@ -7,6 +7,9 @@ import {
   walletConnect,
 } from '@thirdweb-dev/react'
 
+
+const activeChain = 1
+
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <ThirdwebProvider
@@ -18,6 +21,7 @@ export default function App({ Component, pageProps }: AppProps) {
         walletConnect(),
       ]}
       clientId="ce562fbed52fdd499005cfc9e2c020e4"
+      activeChain={activeChain}
     >
       <Component {...pageProps} />
     </ThirdwebProvider>
