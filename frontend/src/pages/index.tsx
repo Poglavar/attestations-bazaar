@@ -1,5 +1,6 @@
 import MainNav from '@/components/main-nav'
 import NFTCard from '@/components/nft-card'
+import Logo from '@/components/ui/logo'
 import { Inter } from 'next/font/google'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -7,10 +8,15 @@ const inter = Inter({ subsets: ['latin'] })
 export default function Home() {
   return (
     <main
-      className={`mx-auto flex min-h-screen max-w-7xl flex-col items-center justify-between py-4 sm:py-12 ${inter.className}`}
+      className={`mx-auto flex min-h-screen max-w-7xl flex-col items-center justify-between ${inter.className}`}
     >
+      <Logo/>
       <MainNav />
-      <NFTCard />
+      <div className="mx-auto flex grid min-h-screen bg-ebony-950 w-screen max-w-7xl rounded-lg bg-sky-200 shadow-2xl">
+        <NFTCard />
+
+        <NFTCard />
+      </div>
     </main>
   )
 }
