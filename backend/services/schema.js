@@ -23,7 +23,7 @@ export async function registerSchema() {
             resolverAddress
         },{ gasLimit: 100000 });
 
-        // Optional: Wait for transaction to be validated
+        // Wait for transaction to be validated
         await transaction.wait();
         console.log("New Schema Created", transaction.hash);
     } catch (error) {

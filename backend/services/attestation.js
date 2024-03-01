@@ -1,6 +1,6 @@
 import { EAS, SchemaEncoder } from "@ethereum-attestation-service/eas-sdk";
 import { ethers } from 'ethers';
-import { registerSchema, getSchemaRecord } from './schema.js'; // Adjust the path as necessary
+import { getSchemaRecord } from './schema.js';
 import 'dotenv/config';
 
 const encodeDataItems = [
@@ -26,8 +26,8 @@ async function createAttestation(schemaUID, encodeDataItems, recipient, expirati
         // Encode attestation data
         const schemaEncoder = new SchemaEncoder('int256 eventId, int256 voteIndex');
         const encodedData = schemaEncoder.encodeData([
-                {name: 'eventId', value: '1', type: 'int256'},
-                {name: 'voteIndex', value: "10", type: 'int256'}
+                {name: 'eventId', value: 1, type: 'int256'},
+                {name: 'voteIndex', value: 10, type: 'int256'}
 
         ]
             // encodeDataItems.map(item => ({
@@ -41,10 +41,10 @@ async function createAttestation(schemaUID, encodeDataItems, recipient, expirati
             schema: schemaUID,
             data: {
                 data: encodedData,
-                ...(recipient && { recipient }), // Include recipient if provided
-                ...(expirationTime && { expirationTime }), // Include expirationTime if provided
-                ...(typeof revocable !== 'undefined' && { revocable }), // Include revocable if provided
-                ...(referencedAttestationUID && { referencedAttestation: referencedAttestationUID }), // Include referencedAttestationUID if provided
+                ...(recipient && { recipient }),
+                ...(expirationTime && { expirationTime }),
+                ...(typeof revocable !== 'undefined' && { revocable }),
+                ...(referencedAttestationUID && { referencedAttestation: referencedAttestationUID }),
             },
         }
 
@@ -63,9 +63,9 @@ async function createAttestation(schemaUID, encodeDataItems, recipient, expirati
     }
 }
 
-const dataItems = [
-    { name: "isHonest", value: true, type: "bool" },
-];
+// const dataItems = [
+//     { name: "isHonest", value: true, type: "bool" },
+// ];
 
 createAttestation('0xd6e70820b5dfe7cd8634e10b361ede9ffdcd3c366b96c40a3026afb91dd0b9ae', dataItems, '0xB4dcDc78D27a93e40406a98e8B32D7dBaa6F4835', 0, true)
     .then(newAttestationUID => console.log(`Attestation created with UID: ${newAttestationUID}`))
