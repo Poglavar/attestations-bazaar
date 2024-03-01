@@ -39,13 +39,7 @@ const NFTPage = () => {
   }
 
   return (
-    <main
-      className={`mx-auto flex min-h-screen max-w-7xl flex-col items-center justify-between`}
-    >
-      <div className="mx-auto flex grid min-h-screen w-screen max-w-7xl rounded-lg bg-ebony-950 bg-seance-900 shadow-2xl">
-        <NFTDetailPage nft={nft} />;
-      </div>
-    </main>
+    <NFTDetailPage nft={nft} />
   )
 }
 

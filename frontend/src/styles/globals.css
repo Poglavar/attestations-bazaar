@@ -75,3 +75,21 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+.background {
+  background-color: #000118;
+  opacity: 1;
+  background-image: radial-gradient(#7e029d 1.35px, transparent 1.35px), radial-gradient(#7e029d 1.35px, #000118 1.35px);
+  background-size: 54px 54px;
+  background-position: 0 0, 27px 27px;
+}
+
+.containerx {
+  background: rgba(0, 0, 0, 0);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.27);
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(2px);
+  border-radius: 10px;
+  border: 1px solid rgba(8, 6, 8, 0.18);
+}
