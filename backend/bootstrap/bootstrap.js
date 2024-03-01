@@ -24,8 +24,8 @@ const createAttestation = async (eas) => {
     const selectedScehmaEncoder = await readFromSchemaFile('backend/model/schema/schema_encoder')
     const schemaEncoder = new SchemaEncoder(selectedScehmaEncoder)
     const encodedData = schemaEncoder.encodeData([
-        { name: "eventId", value: 1, type: "uint256" },
-        { name: "voteIndex", value: 1, type: "uint8" },
+        { name: "eventId", value: 1, type: "int256" },
+        { name: "voteIndex", value: 1, type: "int8" },
     ])
 
     const schemaUID = "0xb16fa048b0d597f5a821747eba64efa4762ee5143e9a80600d0005386edfc995"
