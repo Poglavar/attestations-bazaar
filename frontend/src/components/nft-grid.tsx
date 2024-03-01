@@ -31,7 +31,7 @@ export default function NFTGrid() {
         const ownerAddress = '0xFCaAAB590fC876ef9be2D00178e9C78A4Edab825' // Replace with the actual owner address
         const { ownedNfts } = await alchemy.nft.getNftsForOwner(ownerAddress)
         const filteredNfts = ownedNfts.filter(
-          (nft) => nft.image && nft.image.originalUrl
+          (nft) => nft.image && nft.image.originalUrl && nft.image.contentType?.includes('image')
         )
         setNFTs(organizeNFTsByCollection(filteredNfts))
         console.log(filteredNfts)
@@ -44,7 +44,7 @@ export default function NFTGrid() {
   }, [])
 
   return (
-    <Tabs defaultValue="all" className="w-full px-4">
+    <Tabs defaultValue="all" className="w-full p-4">
       <TabsList className="mx-auto my-4 w-full bg-transparent">
         {Object.keys(nfts).map((collectionName) => (
           <TabsTrigger key={collectionName} value={collectionName}>

@@ -6,6 +6,10 @@ import {
   coinbaseWallet,
   walletConnect,
 } from '@thirdweb-dev/react'
+import { Inter } from 'next/font/google'
+import Layout from '@/components/layout'
+
+const inter = Inter({ subsets: ['latin'] })
 
 
 const activeChain = 1
@@ -23,7 +27,9 @@ export default function App({ Component, pageProps }: AppProps) {
       clientId="ce562fbed52fdd499005cfc9e2c020e4"
       activeChain={activeChain}
     >
-      <Component {...pageProps} />
+      <Layout>
+        <Component {...pageProps} className={inter.className} />
+      </Layout>
     </ThirdwebProvider>
   )
 }

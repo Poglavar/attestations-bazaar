@@ -42,7 +42,7 @@ const NFTCard = ({ nft }) => {
             as="button"
             className="rounded-xl bg-black px-4 py-2 text-xs font-bold text-white dark:bg-white dark:text-black"
           >
-            Sign up
+            {nft.contract.tokenType}
           </CardItem>
         </div>
       </CardBody>
