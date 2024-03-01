@@ -5,7 +5,7 @@ import 'dotenv/config';
 const schemaRegistryContractAddress = "0x0a7E2Ff54e76B8E6659aedc9103FB21c038050D0";
 const schemaRegistry = new SchemaRegistry(schemaRegistryContractAddress);
 
-const provider = new ethers.JsonRpcProvider("https://eth-sepolia.g.alchemy.com/v2/0FXAwHoHh0CzpFUTD0e_OFr-RAoA1Xue");
+const provider  =   new ethers.JsonRpcProvider("https://eth-sepolia.g.alchemy.com/v2/0FXAwHoHh0CzpFUTD0e_OFr-RAoA1Xue");
 export async function registerSchema() {
     try {
         // Initialize provider and signer
@@ -13,9 +13,9 @@ export async function registerSchema() {
         const connectedSchemaRegistry = schemaRegistry.connect(signer);
 
         // Initialize SchemaEncoder with the schema string
-        const schema = "int256 eventId, int256 voteIndex";
+        const schema = "int256 test2Id, int256 voteIndex";
         const resolverAddress = "0x0a7E2Ff54e76B8E6659aedc9103FB21c038050D0"; // Sepolia 0.26
-        const revocable = true; // A flag allowing an attestation to be revoked
+        const revocable = false; // A flag allowing an attestation to be revoked
 
         const transaction = await connectedSchemaRegistry.register({
             schema,

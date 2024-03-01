@@ -15,8 +15,9 @@ async function createAttestation(schemaUID, encodeDataItems, recipient, expirati
         const schemaInfo = await getSchemaRecord(schemaUID);
 
         const easContractAddress = '0xC2679fBD37d54388Ce493F1DB75320D236e1815e';
-        const provider = new ethers
-            .JsonRpcProvider('https://eth-sepolia.g.alchemy.com/v2/0FXAwHoHh0CzpFUTD0e_OFr-RAoA1Xue');
+        const provider = ethers.getDefaultProvider(
+            "sepolia"
+        )
         const signer = new ethers
             .Wallet(process.env.ATTEST_PRIV_KEY,
                 provider);
@@ -24,11 +25,10 @@ async function createAttestation(schemaUID, encodeDataItems, recipient, expirati
 
 
         // Encode attestation data
-        const schemaEncoder = new SchemaEncoder('int256 eventId, int256 voteIndex');
+        const schemaEncoder = new SchemaEncoder('int256 test1Id, int256 voteIndex');
         const encodedData = schemaEncoder.encodeData([
-                {name: 'eventId', value: 1, type: 'int256'},
-                {name: 'voteIndex', value: 10, type: 'int256'}
-
+                {name: 'test1Id', value: 1, type: 'int256'},
+                {name: 'voteIndex', value: 2, type: 'int256'},
         ]
             // encodeDataItems.map(item => ({
             //     name: item.name,
@@ -63,10 +63,10 @@ async function createAttestation(schemaUID, encodeDataItems, recipient, expirati
     }
 }
 
-// const dataItems = [
-//     { name: "isHonest", value: true, type: "bool" },
-// ];
+const dataItems = [
+    { name: "isHonest", value: true, type: "bool" },
+];
 
-createAttestation('0xd6e70820b5dfe7cd8634e10b361ede9ffdcd3c366b96c40a3026afb91dd0b9ae', dataItems, '0xB4dcDc78D27a93e40406a98e8B32D7dBaa6F4835', 0, true)
+createAttestation('0x50e562002c209091c649e3ba5d6a89cad7b790a32cc235cfda5ea13b064b033c', dataItems, '', 0, false)
     .then(newAttestationUID => console.log(`Attestation created with UID: ${newAttestationUID}`))
     .catch(error => console.error("Failed to create attestation:", error));
