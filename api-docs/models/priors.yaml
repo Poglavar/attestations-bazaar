@@ -1,0 +1,24 @@
+title: Social Graph Priors 
+type: object
+description: Data model for Social Graph Priors
+required:
+  - priors
+additionalProperties: false
+properties:
+  priors:
+    description: The priors to be used in the page rank algorithm
+    type: array
+    items:
+      type: object
+      properties:
+        address:
+          description: An ethereum address
+          type: string
+          format: address
+          example: '0x85a091830609454acc8234e63fa2225bd6168a18'
+        rank:
+          description: A number between 0 and 100
+          type: integer
+          example: 100
+          minimum: 0
+          maximum: 100

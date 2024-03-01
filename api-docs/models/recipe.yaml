@@ -1,0 +1,20 @@
+title: A recipe
+type: object
+description: Data model for Recipes of Attestations (lists that lead to a desired outcome)
+required:
+  - outcome
+  - required_attestations
+additionalProperties: false
+properties:
+  outcome:
+    description:
+    type: string
+    example: 'I want to get a loan'
+  required_attestations:
+    description: The attestations that are required to achieve the outcome
+    type: array
+    items:
+      description: An attestation that is required to achieve the outcome
+      type: string
+      format: address
+      example: '0x85a091830609454acc8234e63fa2225bd6168a18'
