@@ -49,8 +49,7 @@ contract TokenEscrow is SchemaResolver {
         // send the token to this contract MAKE SURE TO APROVE FIRST
         _targetToken.safeTransferFrom(attestation.attester, address(this), amount);
         // store the amount pledged
-        pledges[suid] = amount;
-
+        pledges[attestation.uid] = amount;
         return true;
     }
 

@@ -1,9 +1,13 @@
 import fs from 'fs';
-import path from 'path';
 
-function readAddress(filename : string) {
-    const addressData = fs.readFileSync(path.join('../', filename), 'utf-8');
-    return JSON.parse(addressData);
+function readAddress(filepath) {
+    try {
+        const addressData = fs.readFileSync(filepath, 'utf-8');
+        return JSON.parse(addressData);
+    } catch (error) {
+        console.error("Error reading file:", error);
+        return null;
+    }
 }
 
-export {readAddress}
+export { readAddress };

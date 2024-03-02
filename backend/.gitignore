@@ -16,3 +16,5 @@ docs/
 node_modules
 
 /bootstrap/eth_accounts.json
+/bootstrap/eth_accounts_2.json
+/bootstrap/eth_accounts_4.json
