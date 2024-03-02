@@ -8,7 +8,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table' // Ensure this path matches your project structure
+} from '@/components/ui/table'
 import { truncateAddress } from '@/utils/truncate'
 
 const GET_ATTESTATIONS = gql`
