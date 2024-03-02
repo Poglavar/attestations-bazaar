@@ -1,10 +1,8 @@
 import React from 'react'
 import Image from 'next/image'
 import { CardBody, CardContainer, CardItem } from '@/components/ui/3d-card'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useQuery } from '@apollo/client'
 import { GET_RECIPES, processRecipes } from '@/queries/GET_RECIPES'
-import { truncateAddress } from '@/utils/truncate'
 import AttestationsSchemaCard from './attestation-schema-card'
 import AttestationsTable from './attestations-table'
 import {
@@ -15,7 +13,6 @@ import {
 } from '@radix-ui/react-accordion'
 
 function NFTDetailPage({ nft }: { nft: any }) {
-  // This data should be replaced with actual NFT data passed as props or fetched from an API
   const {
     contractAddress,
     tokenId,
@@ -40,7 +37,7 @@ function NFTDetailPage({ nft }: { nft: any }) {
           <CardBody className="group/card relative h-auto w-auto ">
             <CardItem translateZ="100" className="mt-4 overflow-hidden">
               <Image
-                src={nft.image.originalUrl}
+                src={nft.imageUrl}
                 height="1000"
                 width="1000"
                 className="max-w-200 rounded-xl object-cover group-hover/card:shadow-xl"
@@ -88,8 +85,8 @@ function NFTDetailPage({ nft }: { nft: any }) {
         </h2>
 
         <AttestationsTable
-          recipientFilter={nft.contract.address}
-          tokenIdFilter={nft.tokenId}
+          recipientFilter={nft.collectionAddress}
+          tokenIdFilter={nft.collectionTokenId}
         />
       </div>
     </div>

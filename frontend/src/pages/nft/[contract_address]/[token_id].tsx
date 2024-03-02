@@ -1,30 +1,36 @@
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
-import { Alchemy, Network } from 'alchemy-sdk'
 import NFTDetailPage from '@/components/nft-detail-page'
+import { Core } from '@quicknode/sdk'
 
 const NFTPage = () => {
   const router = useRouter()
   const { contract_address, token_id } = router.query
   const [nft, setNft] = useState<any>(null)
 
-  const recipes = useEffect(() => {
+  useEffect(() => {
     if (!contract_address || !token_id) return
 
-    const config = {
-      apiKey: 'alcht_O8c5T30AkUyXtUmd2DGhuCsBQv4AKV',
-      network: Network.ETH_MAINNET,
-    }
-    const alchemy = new Alchemy(config)
+    const core = new Core({
+      endpointUrl:
+        'https://blissful-floral-borough.quiknode.pro/c03e6f34faadc15ae0e7d069b62b248e28e23257/',
+      config: {
+        addOns: {
+          nftTokenV2: true,
+        },
+      },
+    })
 
     async function fetchNFT() {
+      if (typeof contract_address !== 'string' || typeof token_id !== 'string') return;
       try {
-        const nftData = await alchemy.nft.getNftMetadata(
-          contract_address as string,
-          token_id as string
-        )
-        console.log(nftData)
-        setNft(nftData)
+        const response = await core.client.qn_fetchNFTsByCollection({
+          collection: contract_address,
+          tokens: [token_id],
+        })
+        if (response.tokens && response.tokens.length > 0) {
+          setNft(response.tokens[0]) 
+        }
       } catch (error) {
         console.error('Failed to fetch NFT:', error)
       }

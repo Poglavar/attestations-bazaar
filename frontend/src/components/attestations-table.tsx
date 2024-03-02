@@ -3,7 +3,6 @@ import { useQuery, gql } from '@apollo/client'
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -12,7 +11,6 @@ import {
 import { truncateAddress } from '@/utils/truncate'
 import Link from 'next/link'
 import { extractDataByKey } from '@/utils/graphql'
-import { ExecOptionsWithStringEncoding } from 'child_process'
 
 interface Attestation {
   decodedDataJson: string
@@ -58,7 +56,9 @@ const AttestationsTable = ({
     variables: {
       take: itemsPerPage,
       skip: page * itemsPerPage,
-      ...(recipientFilter && { recipient: recipientFilter }),
+      ...(recipientFilter && {
+        recipient: '0x5cbeb7A0df7Ed85D82a472FD56d81ed550f3Ea95',
+      }),
     },
   })
 
@@ -76,8 +76,6 @@ const AttestationsTable = ({
       setFilteredData(data.attestations)
     }
   }, [data, tokenIdFilter])
-
-  console.log(data)
 
   if (loading) return <p>Loading...</p>
   if (error) return <p>Error :(</p>
