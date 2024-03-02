@@ -48,6 +48,8 @@ contract TokenEscrow is SchemaResolver {
         ) = abi.decode(attestation.data, (bytes32, uint256, string, string, string, string));
         // send the token to this contract MAKE SURE TO APROVE FIRST
         _targetToken.safeTransferFrom(attestation.attester, address(this), amount);
+        // store the amount pledged
+        pledges[suid] = amount;
 
         return true;
     }
