@@ -56,7 +56,7 @@ const AttestationsTable = ({
 
   return (
     <div>
-      <Table className="min-w-full">
+      <Table className="w-full">
         <TableHeader>
           <TableRow>
             <TableHead>ID</TableHead>
@@ -71,7 +71,7 @@ const AttestationsTable = ({
             <TableRow key={id}>
               <TableCell>
                 <Link
-                  href={`https://sepolia.easscan.org/schema/view/${id}`}
+                  href={`https://sepolia.easscan.org/attestation/view/${id}`}
                   target="_blank"
                 >
                   {truncateAddress(id)}
@@ -79,7 +79,7 @@ const AttestationsTable = ({
               </TableCell>
               <TableCell>{truncateAddress(attester)}</TableCell>
               <TableCell>{truncateAddress(recipient)}</TableCell>
-              <TableCell>{Math.floor(Math.random()*100)}</TableCell>
+              <TableCell>{Math.floor(Math.random() * 100)}</TableCell>
             </TableRow>
           ))}
         </TableBody>

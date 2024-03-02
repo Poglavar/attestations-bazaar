@@ -15,5 +15,4 @@ const AttestationsSchemaCard = ({ schemaId }: { schemaId: string }) => {
   )
 }
 
-
 export default AttestationsSchemaCard
