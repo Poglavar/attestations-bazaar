@@ -16,6 +16,7 @@
     "ethers": "^6.11.1",
     "fs": "^0.0.1-security",
     "hashset": "^0.0.6",
+    "path": "^0.12.7",
     "random-bool": "^1.0.2",
     "unique-names-generator": "^4.7.1"
   }

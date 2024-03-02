@@ -13,7 +13,6 @@ import Link from 'next/link'
 import { extractDataByKey } from '@/utils/graphql'
 import { buttonVariants } from '@/components/ui/button'
 
-
 interface Attestation {
   decodedDataJson: string
   id: string
@@ -22,47 +21,45 @@ interface Attestation {
   expectedOutcome: string
 }
 
-const GET_ATTESTATIONS = gql`
-  query Attestations($take: Int!, $skip: Int!, $recipient: String) {
+const GET_REQUESTS = gql`
+  query Recipes($take: Int! = 25, $skip: Int! = 0, $recipient: String) {
     attestations(
       take: $take
       skip: $skip
-      where: { recipient: { equals: $recipient } }
+      where: {
+        schemaId: {
+          equals: "0x41a4762b6d24720f43720883824687b54a3263b38b82d0ad93a0dd3d47024728"
+        }
+        recipient: { equals: $recipient }
+      }
       orderBy: { time: desc }
     ) {
       id
       attester
       recipient
       refUID
-      revocable
-      revocationTime
-      expirationTime
-      data
       decodedDataJson
     }
   }
 `
 
-const AttestationsTable = ({
+const RequestsTable = ({
   recipientFilter,
   tokenIdFilter,
 }: {
   recipientFilter?: string
   tokenIdFilter?: string
 }) => {
-  const itemsPerPage = 25
-  const [page, setPage] = useState(0)
   const [filteredData, setFilteredData] = useState([])
 
-  const { loading, error, data } = useQuery(GET_ATTESTATIONS, {
+  const { loading, error, data } = useQuery(GET_REQUESTS, {
     variables: {
-      take: itemsPerPage,
-      skip: page * itemsPerPage,
       ...(recipientFilter && {
         recipient: '0x5cbeb7A0df7Ed85D82a472FD56d81ed550f3Ea95',
       }),
     },
   })
+  console.log(data)
 
   useEffect(() => {
     if (data && data.attestations && tokenIdFilter) {
@@ -84,13 +81,12 @@ const AttestationsTable = ({
 
   return (
     <div>
-      <Table className="">
+      <Table className="w-full">
         <TableHeader>
           <TableRow>
             <TableHead>ID</TableHead>
             <TableHead>Attester</TableHead>
             <TableHead>Recipient</TableHead>
-            <TableHead>Reputation</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -107,37 +103,23 @@ const AttestationsTable = ({
               </TableCell>
               <TableCell>{truncateAddress(attester)}</TableCell>
               <TableCell>{truncateAddress(recipient)}</TableCell>
-              <TableCell>{Math.floor(Math.random() * 100)}</TableCell>
               <TableCell>
                 <Link
-                  href="https://sepolia.easscan.org/attestation/attestWithSchema/0x4120dbef15220361e3e51db8e3979b2523fceced8442866df5e596d2766ca9dd"
-                  className={`${buttonVariants({ variant: 'outline' })} mx-2 h-10 w-24  py-6 text-center text-black`}
+                  href="https://sepolia.easscan.org/attestation/attestWithSchema/0x5873efc18f905da81845826b1f99510fb55fd9d2a2c5a15980f270c626796634"
+                  className={`${buttonVariants({ variant: 'destructive' })} mx-2 h-10 w-24  py-6 text-center text-black`}
                   target="_blank"
                 >
-                  Accept
+                  Offer
                   <wbr />
                   Attestation
                 </Link>
-                
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-      <div className="mt-4 flex justify-between">
-        <button
-          onClick={() => setPage(page - 1)}
-          disabled={page === 0}
-          className="btn-primary"
-        >
-          Previous
-        </button>
-        <button onClick={() => setPage(page + 1)} className="btn-primary">
-          Next
-        </button>
-      </div>
     </div>
   )
 }
 
-export default AttestationsTable
+export default RequestsTable

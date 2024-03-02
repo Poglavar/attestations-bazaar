@@ -11,6 +11,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@radix-ui/react-accordion'
+import RequestsTable from './requests-table'
 
 function NFTDetailPage({ nft }: { nft: any }) {
   const {
@@ -46,7 +47,8 @@ function NFTDetailPage({ nft }: { nft: any }) {
             </CardItem>
           </CardBody>
         </CardContainer>
-        <p className="h-60 overflow-y-scroll text-justify text-sm font-light text-neutral-600 dark:text-neutral-500">
+
+        <p className="h-60 overflow-x-hidden overflow-y-scroll text-justify text-sm font-light text-neutral-600 dark:text-neutral-500">
           {nft.description}
         </p>
       </div>
@@ -88,6 +90,16 @@ function NFTDetailPage({ nft }: { nft: any }) {
           recipientFilter={nft.collectionAddress}
           tokenIdFilter={nft.collectionTokenId}
         />
+        <h2 className="my-4 text-xl font-bold text-neutral-600 dark:text-white">
+          Requests for Attestation
+        </h2>
+        <RequestsTable
+          recipientFilter={nft.collectionAddress}
+          tokenIdFilter={nft.collectionTokenId}
+        />
+        <p className="text-sm mt-24 word-wrap my-4 text-neutral-600 dark:text-white">
+          Contract Address: {nft.collectionAddress} - {nft.collectionTokenId}
+        </p>
       </div>
     </div>
   )
