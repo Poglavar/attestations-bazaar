@@ -1,11 +1,29 @@
-import { SchemaRegistry} from "@ethereum-attestation-service/eas-sdk";
+import { SchemaRegistry } from "@ethereum-attestation-service/eas-sdk";
 import { ethers } from 'ethers';
 import 'dotenv/config';
+
+// This is the definition of schemas we are actually using
+// Source: https://docs.google.com/document/d/1-DAiJ0lxO9JCTpHz3NgLpwhNlXVi5R7L761POVNohkM/edit
+const allSchemas = [
+    // Recipe
+    "string EXPECTED_OUTCOME,bytes32[] SCHEMA_ID",
+    // Identity/Reputation
+    "string MY_NAME_IS",
+    "bool THIS_ATTESTATION_IS_TRUE",
+    // Land
+    "bool IS_IN_NATURE_RESERVE,string SUPPORTING_URL,string TARGET_CHAIN,string TARGET_CONTRACT,string TARGET_ID",
+    "bool IS_BUILDING_PERMITTED,string SUPPORTING_URL,string TARGET_CHAIN,string TARGET_CONTRACT,string TARGET_ID",
+    // Marketplace
+    "bytes32 I_WILL_PAY_FOR_SUID,uint256 AMOUNT,string CURRENCY,string TARGET_CHAIN,string TARGET_ADDRESS,string TARGET_ID",
+    "bytes32 I_WILL_DO_SUID,uint256 AMOUNT,string CURRENCY,string TARGET_CHAIN,string TARGET_ADDRESS,string TARGET_ID",
+    "bytes32 I_ACCEPT_AUID",
+    "bytes32 I_CONFIRM_DONE_AUID,uint8 REVIEW_SCORE,string REVIEW_TEXT"
+]
 
 const schemaRegistryContractAddress = "0x0a7E2Ff54e76B8E6659aedc9103FB21c038050D0";
 const schemaRegistry = new SchemaRegistry(schemaRegistryContractAddress);
 
-const provider  =   new ethers.JsonRpcProvider("https://eth-sepolia.g.alchemy.com/v2/0FXAwHoHh0CzpFUTD0e_OFr-RAoA1Xue");
+const provider = new ethers.JsonRpcProvider("https://eth-sepolia.g.alchemy.com/v2/0FXAwHoHh0CzpFUTD0e_OFr-RAoA1Xue");
 export async function registerSchema() {
     try {
         // Initialize provider and signer
@@ -21,7 +39,7 @@ export async function registerSchema() {
             schema,
             revocable,
             resolverAddress
-        },{ gasLimit: 100000 });
+        }, { gasLimit: 100000 });
 
         // Wait for transaction to be validated
         await transaction.wait();
