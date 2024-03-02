@@ -24,20 +24,19 @@ contract TokenEscrow is SchemaResolver {
     // function that can be called to retrieve the target token
     // only acceptedOfferer can call this function
     function retrieveToken(uint256 amount) external {
+        // approve the amount to be transfered
+        _targetToken.approve(msg.sender, amount);
         _targetToken.safeTransfer(msg.sender, amount);
     }
 
     // TODO: at the moment we will take the amount you are pledging every time you call this function,
     // but in the future why not allow to request with more than the pledged amount?
     function onAttest(Attestation calldata attestation, uint256 /*value*/ ) internal override returns (bool) {
-        // if (_targetToken.allowance(attestation.attester, address(this)) < _targetAmount) {
-        //     revert InvalidAllowance();
-        // }
-
-        // Amount will be arriving in the refUID field in a hex format 0x123
-        // Convert it to a uint256
-        uint256 amount = uint256(attestation.refUID);
-
+        // Amount will be arriving in the encoded attestation.data (bytes) field which is of the structure:
+        // "bytes32 I_WILL_PAY_FOR_SUID,uint256 AMOUNT,string CURRENCY,string TARGET_CHAIN,string TARGET_ADDRESS,string TARGET_ID"
+        // so we need to decode it to get the amount
+        (suid, amount, currency, chain, addr, id) =
+            abi.decode(attestation.data, (bytes32, uint256, string, string, string, string));
         // send the token to this contract MAKE SURE TO APROVE FIRST
         _targetToken.safeTransferFrom(attestation.attester, address(this), amount);
 

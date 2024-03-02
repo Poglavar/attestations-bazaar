@@ -17,27 +17,18 @@ contract TokenSender is SchemaResolver {
 
     error InvalidAllowance();
 
-    IERC20 private immutable _targetToken;
     ITokenEscrow private immutable _tokenEscrow;
 
-    constructor(IEAS eas, IERC20 targetToken, ITokenEscrow tokenEscrow) SchemaResolver(eas) {
-        _targetToken = targetToken;
+    constructor(IEAS eas, ITokenEscrow tokenEscrow) SchemaResolver(eas) {
         _tokenEscrow = tokenEscrow;
     }
 
     function onAttest(Attestation calldata attestation, uint256 /*value*/ ) internal override returns (bool) {
-        // if (_targetToken.allowance(attestation.attester, address(this)) < _targetAmount) {
-        //     revert InvalidAllowance();
-        // }
-
-        // Amount will be arriving in the refUID field in a hex format 0x123
-        // Convert it to a uint256
-        uint256 amount = uint256(attestation.refUID);
-
-        // send the tokens to the address in the to field
-        // _targetToken.safeTransferFrom(attestation.attester, attestation.recipient, amount);
-        _tokenEscrow.retrieveToken(amount);
-
+        // Amount will be arriving in the data field with the structure:
+        // bytes32 I_CONFIRM_DONE_AUID,uint8 REVIEW_SCORE,string REVIEW_TEXT
+        (auid, score, review) = abi.decode(attestation.data, (bytes32, uint8, string));
+        Attestation memory targetAttestation = _eas.getAttestation(auid);
+        _tokenEscrow.retrieveToken(amount, attestation.recipient);
         return true;
     }
 
