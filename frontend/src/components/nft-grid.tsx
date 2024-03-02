@@ -70,7 +70,7 @@ export default function NFTGrid() {
   }, [])
 
   return (
-    <Tabs defaultValue="all" className="w-full p-4">
+    <Tabs defaultValue="Fabrica Land" className="w-full p-4">
       <TabsList className="mx-auto my-4 w-full bg-transparent">
         {Object.keys(nfts).map((collectionName) => (
           <TabsTrigger key={collectionName} value={collectionName}>
