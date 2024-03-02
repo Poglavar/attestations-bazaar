@@ -4,7 +4,7 @@ import { CardItem, CardBody, CardContainer } from './ui/3d-card'
 import { truncate } from '@/utils/truncate'
 import Link from 'next/link'
 
-const NFTCard = ({ nft }: {nft: any}) => {
+const NFTCard = ({ nft }: { nft: any }) => {
   return (
     <CardContainer>
       <CardBody className="group/card relative h-auto w-auto rounded-xl border border-black/[0.1] bg-gray-50 p-6 dark:border-white/[0.2] dark:bg-black dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1]">

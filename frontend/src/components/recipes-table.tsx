@@ -15,11 +15,11 @@ interface Attestation {
   id: string
   attester: string
   recipient: string
-  expectedOutcome?: string 
+  expectedOutcome?: string
 }
 
 const RecipesTable = () => {
-  const itemsPerPage = 10 
+  const itemsPerPage = 10
   const [page, setPage] = useState(0)
   const [recipes, setRecipes] = useState<Attestation[]>([])
 
