@@ -1,12 +1,12 @@
-import { SchemaRegistry} from "@ethereum-attestation-service/eas-sdk";
-import { ethers } from 'ethers';
-import 'dotenv/config';
+const { SchemaRegistry } = require("@ethereum-attestation-service/eas-sdk");
+const { ethers } = require('ethers');
+require('dotenv').config();
 
 const schemaRegistryContractAddress = "0x0a7E2Ff54e76B8E6659aedc9103FB21c038050D0";
 const schemaRegistry = new SchemaRegistry(schemaRegistryContractAddress);
 
-const provider  =   new ethers.JsonRpcProvider("https://eth-sepolia.g.alchemy.com/v2/0FXAwHoHh0CzpFUTD0e_OFr-RAoA1Xue");
-export async function registerSchema() {
+const provider = new ethers.JsonRpcProvider("https://eth-sepolia.g.alchemy.com/v2/0FXAwHoHh0CzpFUTD0e_OFr-RAoA1Xue");
+async function registerSchema() {
     try {
         // Initialize provider and signer
         const signer = new ethers.Wallet(process.env.FROM_PRIV_KEY, provider);
@@ -21,7 +21,7 @@ export async function registerSchema() {
             schema,
             revocable,
             resolverAddress
-        },{ gasLimit: 100000 });
+        }, { gasLimit: 100000 });
 
         // Wait for transaction to be validated
         await transaction.wait();
@@ -31,7 +31,7 @@ export async function registerSchema() {
     }
 }
 
-export async function getSchemaRecord(schemaUID) {
+async function getSchemaRecord(schemaUID) {
     try {
         const connectedSchemaRegistry = schemaRegistry.connect(provider);
         const schemaInfo = await connectedSchemaRegistry.getSchema({ uid: schemaUID });
@@ -45,5 +45,9 @@ export async function getSchemaRecord(schemaUID) {
 //     console.log(schemaInfo);
 // });
 
-registerSchema();
+// registerSchema();
 
+module.exports = {
+    getSchemaRecord,
+    registerSchema
+}
