@@ -86,7 +86,10 @@ function NFTDetailPage({ nft }) {
           Attestations
         </h2>
 
-        <AttestationsTable recipientFilter={nft.contract.address} />
+        <AttestationsTable
+          recipientFilter={nft.contract.address}
+          tokenIdFilter={nft.tokenId}
+        />
       </div>
     </div>
   )

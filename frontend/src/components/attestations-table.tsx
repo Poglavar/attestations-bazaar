@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useQuery, gql } from '@apollo/client'
 import {
   Table,
@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/table'
 import { truncateAddress } from '@/utils/truncate'
 import Link from 'next/link'
-import { randomInt } from 'crypto'
+import { extractDataByKey } from '@/utils/graphql'
 
 const GET_ATTESTATIONS = gql`
   query Attestations($take: Int!, $skip: Int!, $recipient: String) {
@@ -29,18 +29,22 @@ const GET_ATTESTATIONS = gql`
       revocationTime
       expirationTime
       data
+      decodedDataJson
     }
   }
 `
 
 const AttestationsTable = ({
   recipientFilter,
+  tokenIdFilter,
 }: {
   recipientFilter?: string
+  tokenIdFilter?: string
 }) => {
   const itemsPerPage = 25
   const [page, setPage] = useState(0)
-  console.log(recipientFilter)
+  const [filteredData, setFilteredData] = useState([])
+
   const { loading, error, data } = useQuery(GET_ATTESTATIONS, {
     variables: {
       take: itemsPerPage,
@@ -48,6 +52,24 @@ const AttestationsTable = ({
       ...(recipientFilter && { recipient: recipientFilter }),
     },
   })
+
+  useEffect(() => {
+    if (data && data.attestations && tokenIdFilter) {
+      const filtered = data.attestations.filter((attestation) => {
+        const tokenId = extractDataByKey(
+          JSON.parse(attestation.decodedDataJson),
+          'TARGET_ID'
+        )
+        return tokenId === tokenIdFilter
+      })
+      setFilteredData(filtered)
+    } else if (data && data.attestations) {
+      setFilteredData(data.attestations)
+    }
+  }, [data, tokenIdFilter])
+
+
+  
 
   console.log(data)
 
