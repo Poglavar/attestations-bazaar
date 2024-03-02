@@ -12,6 +12,15 @@ import {
 import { truncateAddress } from '@/utils/truncate'
 import Link from 'next/link'
 import { extractDataByKey } from '@/utils/graphql'
+import { ExecOptionsWithStringEncoding } from 'child_process'
+
+interface Attestation {
+  decodedDataJson: string
+  id: string
+  attester: string
+  recipient: string
+  expectedOutcome: string
+}
 
 const GET_ATTESTATIONS = gql`
   query Attestations($take: Int!, $skip: Int!, $recipient: String) {
@@ -55,7 +64,7 @@ const AttestationsTable = ({
 
   useEffect(() => {
     if (data && data.attestations && tokenIdFilter) {
-      const filtered = data.attestations.filter((attestation) => {
+      const filtered = data.attestations.filter((attestation: Attestation) => {
         const tokenId = extractDataByKey(
           JSON.parse(attestation.decodedDataJson),
           'TARGET_ID'
@@ -89,7 +98,7 @@ const AttestationsTable = ({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data.attestations.map(({ id, attester, recipient }) => (
+          {filteredData.map(({ id, attester, recipient }: Attestation) => (
             <TableRow key={id}>
               <TableCell>
                 <Link
