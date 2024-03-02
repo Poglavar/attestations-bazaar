@@ -4,7 +4,7 @@ import { getSchemaRecord } from './schema.js';
 import 'dotenv/config';
 
 export async function createAttestation(schemaUID, encodeDataItems, schemaEncodeData, recipient, expirationTime,
-                                        revocable, referencedAttestationUID, private_key) {
+                                        revocable, refUID, private_key) {
     try {
         const schemaInfo = await getSchemaRecord(schemaUID);
 
@@ -35,9 +35,9 @@ export async function createAttestation(schemaUID, encodeDataItems, schemaEncode
                 ...(recipient && { recipient }),
                 ...(expirationTime && { expirationTime }),
                 ...(typeof revocable !== 'undefined' && { revocable }),
-                ...(referencedAttestationUID && { referencedAttestation: referencedAttestationUID }),
+                ...(refUID && { refUID })
             },
-        }
+        };
 
         console.log(attestationData);
 
@@ -59,6 +59,6 @@ const dataItems = [
     {name: 'voteIndex', value: 2, type: 'int256'},
 ];
 
-createAttestation('0x50e562002c209091c649e3ba5d6a89cad7b790a32cc235cfda5ea13b064b033c', dataItems, '', 0, false, '', '')
-    .then(newAttestationUID => console.log(`Attestation created with UID: ${newAttestationUID}`))
-    .catch(error => console.error("Failed to create attestation:", error));
+// createAttestation('0x50e562002c209091c649e3ba5d6a89cad7b790a32cc235cfda5ea13b064b033c', dataItems, '', 0, false, '', '')
+//     .then(newAttestationUID => console.log(`Attestation created with UID: ${newAttestationUID}`))
+//     .catch(error => console.error("Failed to create attestation:", error));

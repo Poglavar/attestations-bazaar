@@ -26,71 +26,72 @@ function getRandomInt(min, max) {
 
 
 async function bootstrapAttestations() {
-    var accounts = readAddress('eth_accounts.json');
-    for (let i = accounts.length - 1; i >= accounts.length - 1; i--) {
-        var account = accounts[i];
-        console.log('account addr: ', account.address);
-        const numberOfAttestations = getRandomInt(0, 1);
+    try {
+        var accounts = readAddress('/Users/acehunter/WebstormProjects/attestations-bazaar/backend/bootstrap/eth_accounts_4.json');
+        console.log("size", accounts.length);
+        for (let account of accounts) {
+            const numberOfAttestations = getRandomInt(0, 1);
 
-        for (let i = 0; i < numberOfAttestations; i++) {
-            const schemaKeys = Object.keys(schemas);
-            const randomSchemaKey = schemaKeys[getRandomInt(0, schemaKeys.length - 1)];
-            const schemaUID = schemas[randomSchemaKey];
-            const schemaEncodeData = generateSchemaEncodeDataItemsForSchema(schemaUID);
-            const encodeDataItems = generateEncodeDataItemsForSchema(schemaUID);
+            for (let i = 0; i < numberOfAttestations; i++) {
+                const schemaKeys = Object.keys(schemas);
+                const randomSchemaKey = schemaKeys[getRandomInt(0, schemaKeys.length - 1)];
+                const schemaUID = schemas[randomSchemaKey];
+                const schemaEncodeData = generateSchemaEncodeDataItemsForSchema(schemaUID);
+                const encodeDataItems = generateEncodeDataItemsForSchema(schemaUID);
 
-            const attestationUID = await createAttestation(
-                schemaUID,
-                encodeDataItems,
-                schemaEncodeData,
-                '',
-                0,
-                false,
-                undefined,
-                account.privateKey
-            );
+                const attestationUID = await createAttestation(
+                    schemaUID,
+                    encodeDataItems,
+                    schemaEncodeData,
+                    '',
+                    0,
+                    false,
+                    undefined,
+                    account.privateKey
+                );
 
-            const numOfAttestors = getRandomInt(0, 5);
-            console.log('accounts going to attest: ', numOfAttestors)
+                const numOfAttestors = getRandomInt(0, 3);
+                console.log('accounts going to attest: ', numOfAttestors)
 
-            var hashset = new HashSet();
-            hashset.add(account.address);
-            for (let i = 0; i < numOfAttestors; i++) {
+                var hashset = new HashSet();
+                hashset.add(account.address);
+                for (let i = 0; i < numOfAttestors; i++) {
 
-                // Randomly select an attester different from the current account
-                let attesterAccount;
-                do {
-                    attesterAccount = accounts[getRandomInt(0, accounts.length - 1)];
-                } while (hashset.contains(attesterAccount.address));
-                hashset.add(attesterAccount.address);
+                    // Randomly select an attester different from the current account
+                    let attesterAccount;
+                    do {
+                        attesterAccount = accounts[getRandomInt(0, accounts.length - 1)];
+                    } while (hashset.contains(attesterAccount.address));
+                    hashset.add(attesterAccount.address);
 
-                const schemaAttestorKeys = Object.keys(confirmationSchema);
-                const randomAttestorSchemaKey = schemaAttestorKeys[getRandomInt(0, schemaAttestorKeys.length - 1)];
-                const schemaAttestorUID = confirmationSchema[randomAttestorSchemaKey];
+                    const schemaAttestorKeys = Object.keys(confirmationSchema);
+                    const randomAttestorSchemaKey = schemaAttestorKeys[getRandomInt(0, schemaAttestorKeys.length - 1)];
+                    const schemaAttestorUID = confirmationSchema[randomAttestorSchemaKey];
 
-                // Assuming encodeDataItems needs to be generated or retrieved for each attestation
-                const schemaAttestorEncodeData = generateSchemaEncodeDataItemsForSchema(schemaAttestorUID);
-                console.log(schemaAttestorEncodeData);
-                const encodeAttestorDataItems = generateEncodeDataItemsForSchema(schemaAttestorUID);
-                console.log(encodeAttestorDataItems);
-                try {
-                    const attestationIUID = await createAttestation(
-                        schemaAttestorUID,
-                        encodeAttestorDataItems,
-                        schemaAttestorEncodeData,
-                        '',
-                        0,
-                        false,
-                        schemaUID,
-                        attesterAccount.privateKey
-                    );
-                    console.log(`Attestation created: ${attestationIUID} for account ${account.address} by ${attesterAccount.address}`);
-                } catch (error) {
-                    console.error(`Failed to create attestation for account ${account.address} by ${attesterAccount.address}`, error);
+                    // Assuming encodeDataItems needs to be generated or retrieved for each attestation
+                    const schemaAttestorEncodeData = generateSchemaEncodeDataItemsForSchema(schemaAttestorUID);
+                    console.log(schemaAttestorEncodeData);
+                    const encodeAttestorDataItems = generateEncodeDataItemsForSchema(schemaAttestorUID);
+                    console.log(encodeAttestorDataItems);
+                    try {
+                        const attestationIUID = await createAttestation(
+                            schemaAttestorUID,
+                            encodeAttestorDataItems,
+                            schemaAttestorEncodeData,
+                            account.address,
+                            0,
+                            false,
+                            undefined,
+                            attesterAccount.privateKey
+                        );
+                        console.log(`Attestation created: ${attestationIUID} for account ${account.address} by ${attesterAccount.address}`);
+                    } catch (error) {
+                        console.error(`Failed to create attestation for account ${account.address} by ${attesterAccount.address}`, error);
+                    }
                 }
             }
         }
-    }
+    } catch(error){}
 }
 
 function generateSchemaEncodeDataItemsForSchema(schemaKey) {
