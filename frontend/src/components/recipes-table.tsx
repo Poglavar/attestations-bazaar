@@ -38,14 +38,14 @@ const RecipesTable = () => {
   if (error) return <p>Error :(</p>
 
   return (
-    <div>
+    <div className="md:grid-cols-3 gap-4 grid grid-cols-1 sm:grid-cols-2">
       {recipes.map(({ id, attester, expectedOutcome }) => (
         <GlowingStarsBackgroundCard key={id}>
           <GlowingStarsTitle>{truncateAddress(attester)}</GlowingStarsTitle>
           <div className="flex items-end justify-between">
             <GlowingStarsDescription>{expectedOutcome}</GlowingStarsDescription>
             <Link
-              href={`/recipes/${id}`}
+              href={"/"}
               className="flex h-8 w-8 items-center justify-center rounded-full bg-[hsla(0,0%,100%,.1)]"
             >
               <Icon />

@@ -12,19 +12,14 @@ export default function MainNav() {
     <header className=" mb-8 py-2 sm:py-4">
       <NavigationMenu className="flex-cols items-between flex w-screen max-w-7xl">
         <NavigationMenuList>
-          <Link href="/attestations" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Attestations
-            </NavigationMenuLink>
-          </Link>
-          <Link href="/requests" legacyBehavior passHref>
+          {/* <Link href="/requests" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
               Requests
             </NavigationMenuLink>
-          </Link>
+          </Link> */}
           <Link href="/" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Portfolio
+              NFT Collection
             </NavigationMenuLink>
           </Link>
           <Link href="/recipes" legacyBehavior passHref>
@@ -32,6 +27,11 @@ export default function MainNav() {
               Recipes
             </NavigationMenuLink>
           </Link>
+          {/* <Link href="/attestations" legacyBehavior passHref>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              Attestations
+            </NavigationMenuLink>
+          </Link> */}
         </NavigationMenuList>
         <ConnectWallet />
       </NavigationMenu>
