@@ -16,7 +16,6 @@ const main = async () => {
     while (true) {
         // console.log("Private key:", process.env.PRIVATE_KEY_6)
         console.log("Creating a random attestation...")
-        await new Promise(r => setTimeout(r, 10000));
         const schemaUID = '0x782536bb014ff75f322af240b3d7d7d9b2f64327ce164b27c25f595fa0a56f79'
         const schema = await getSchemaRecord(schemaUID)
         console.log("Schema:", schema)
@@ -25,12 +24,6 @@ const main = async () => {
         const referencedAttestationUID = null
         const expirationTime = 0
 
-        // data is:
-        // bool IS_IN_NATURE_RESERVE
-        // string SUPPORTING_URL
-        // string TARGET_CHAIN
-        // string TARGET_CONTRACT
-        // string TARGET_ID
         const encodedData = [
             { name: "IS_IN_NATURE_RESERVE", value: 1, type: "bool" },
             { name: "SUPPORTING_URL", value: "X", type: "string" },
@@ -48,6 +41,8 @@ const main = async () => {
             process.env.PRIVATE_KEY_6
         )
         console.log("Attestation UID:", attestation_UID)
+        console.log("Waiting 10 seconds...")
+        await new Promise(r => setTimeout(r, 10000));
     }
 }
 
