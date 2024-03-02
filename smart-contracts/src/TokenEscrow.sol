@@ -16,6 +16,8 @@ contract TokenEscrow is SchemaResolver {
     error InvalidAllowance();
 
     IERC20 private immutable _targetToken;
+    // create a mapping between auid and amount
+    mapping(bytes32 => uint256) public pledges;
 
     constructor(IEAS eas, IERC20 targetToken) SchemaResolver(eas) {
         _targetToken = targetToken;
@@ -23,10 +25,11 @@ contract TokenEscrow is SchemaResolver {
 
     // function that can be called to retrieve the target token
     // only acceptedOfferer can call this function
-    function retrieveToken(uint256 amount) external {
+    function retrieveToken(bytes32 auid, address recipient) external {
         // approve the amount to be transfered
-        _targetToken.approve(msg.sender, amount);
-        _targetToken.safeTransfer(msg.sender, amount);
+        uint256 amount = pledges[auid];
+        _targetToken.approve(recipient, amount);
+        _targetToken.safeTransfer(recipient, amount);
     }
 
     // TODO: at the moment we will take the amount you are pledging every time you call this function,
@@ -35,8 +38,14 @@ contract TokenEscrow is SchemaResolver {
         // Amount will be arriving in the encoded attestation.data (bytes) field which is of the structure:
         // "bytes32 I_WILL_PAY_FOR_SUID,uint256 AMOUNT,string CURRENCY,string TARGET_CHAIN,string TARGET_ADDRESS,string TARGET_ID"
         // so we need to decode it to get the amount
-        (suid, amount, currency, chain, addr, id) =
-            abi.decode(attestation.data, (bytes32, uint256, string, string, string, string));
+        (
+            bytes32 suid,
+            uint256 amount,
+            string memory currency,
+            string memory chain,
+            string memory addr,
+            string memory id
+        ) = abi.decode(attestation.data, (bytes32, uint256, string, string, string, string));
         // send the token to this contract MAKE SURE TO APROVE FIRST
         _targetToken.safeTransferFrom(attestation.attester, address(this), amount);
 

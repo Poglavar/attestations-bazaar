@@ -26,9 +26,10 @@ contract TokenSender is SchemaResolver {
     function onAttest(Attestation calldata attestation, uint256 /*value*/ ) internal override returns (bool) {
         // Amount will be arriving in the data field with the structure:
         // bytes32 I_CONFIRM_DONE_AUID,uint8 REVIEW_SCORE,string REVIEW_TEXT
-        (auid, score, review) = abi.decode(attestation.data, (bytes32, uint8, string));
+        // so we need to decode it to get the amount
+        (bytes32 auid, uint8 score, string memory review) = abi.decode(attestation.data, (bytes32, uint8, string));
         Attestation memory targetAttestation = _eas.getAttestation(auid);
-        _tokenEscrow.retrieveToken(amount, attestation.recipient);
+        _tokenEscrow.retrieveToken(auid, targetAttestation.recipient);
         return true;
     }
 
