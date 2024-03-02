@@ -9,15 +9,15 @@ const allSchemas = [
     "string EXPECTED_OUTCOME,bytes32[] SCHEMA_ID",
     // Identity/Reputation
     "string MY_NAME_IS",
-    "bool THIS_ATTESTATION_IS_TRUE",
-    // Land
+    "bool THIS_ATTESTATION_IS_TRUE", // refAUID should be entered
+    // Land (recipient should be same as TARGET_ADDRESS)
     "bool IS_IN_NATURE_RESERVE,string SUPPORTING_URL,string TARGET_CHAIN,string TARGET_ADDRESS,string TARGET_ID",
     "bool IS_BUILDING_PERMITTED,string SUPPORTING_URL,string TARGET_CHAIN,string TARGET_ADDRESS,string TARGET_ID",
-    // Marketplace
+    // Marketplace (recipient should be same as TARGET_ADDRESS)
     "bytes32 I_WILL_PAY_FOR_SUID,uint256 AMOUNT,string CURRENCY,string TARGET_CHAIN,string TARGET_ADDRESS,string TARGET_ID",
     "bytes32 I_WILL_DO_SUID,uint256 AMOUNT,string CURRENCY,string TARGET_CHAIN,string TARGET_ADDRESS,string TARGET_ID",
-    "bytes32 I_ACCEPT_AUID",
-    "bytes32 I_CONFIRM_DONE_AUID,uint8 REVIEW_SCORE,string REVIEW_TEXT"
+    "bytes32 I_ACCEPT_AUID", // (recipient should be same as target AUID creator)
+    "bytes32 I_CONFIRM_DONE_AUID,uint8 REVIEW_SCORE,string REVIEW_TEXT" // (recipient should be same as target AUID creator)
 ]
 
 const schemaRegistryContractAddress = "0x0a7E2Ff54e76B8E6659aedc9103FB21c038050D0";
