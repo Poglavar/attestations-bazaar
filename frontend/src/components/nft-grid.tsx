@@ -17,7 +17,7 @@ const organizeNFTsByCollection = (nfts: OwnedNft[]) => {
 }
 
 export default function NFTGrid() {
-  const [nfts, setNFTs] = useState([])
+  const [nfts, setNFTs] = useState<Record<string, OwnedNft[]>>({})
 
   useEffect(() => {
     const config = {
