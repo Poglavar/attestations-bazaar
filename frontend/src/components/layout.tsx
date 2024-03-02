@@ -2,7 +2,7 @@ import MainNav from '@/components/main-nav'
 import Logo from '@/components/ui/logo'
 import { BackgroundGradient } from './ui/background-gradient'
 
-export default function Layout({ children }) {
+export default function Layout({ children }: { children: any }) {
   return (
     <div className="background">
       <main

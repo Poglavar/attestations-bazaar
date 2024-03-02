@@ -6,7 +6,7 @@ import NFTDetailPage from '@/components/nft-detail-page'
 const NFTPage = () => {
   const router = useRouter()
   const { contract_address, token_id } = router.query
-  const [nft, setNft] = useState(null)
+  const [nft, setNft] = useState<any>(null)
 
   const recipes = useEffect(() => {
     if (!contract_address || !token_id) return
@@ -20,8 +20,8 @@ const NFTPage = () => {
     async function fetchNFT() {
       try {
         const nftData = await alchemy.nft.getNftMetadata(
-          contract_address,
-          token_id
+          contract_address as string,
+          token_id as string
         )
         console.log(nftData)
         setNft(nftData)

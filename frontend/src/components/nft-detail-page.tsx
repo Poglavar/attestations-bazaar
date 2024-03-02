@@ -14,7 +14,8 @@ import {
   AccordionTrigger,
 } from '@radix-ui/react-accordion'
 
-function NFTDetailPage({ nft }) {
+function NFTDetailPage({ nft }: { nft: any }) {
+  // This data should be replaced with actual NFT data passed as props or fetched from an API
   const {
     contractAddress,
     tokenId,
