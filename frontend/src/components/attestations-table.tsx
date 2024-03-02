@@ -84,7 +84,7 @@ const AttestationsTable = ({
 
   return (
     <div>
-      <Table className="w-full">
+      <Table className="">
         <TableHeader>
           <TableRow>
             <TableHead>ID</TableHead>

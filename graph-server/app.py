@@ -1,7 +1,9 @@
+import json
 import random
 
 import networkx as nx
 import pandas as pd
+import requests
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 
@@ -88,13 +90,22 @@ async def recalculate_graph(attestations: AttestationList):
 
 
 
+@app.get("/harpie/{ethereum_address}", summary="Calculate Score of node credibility based on Harpie oracle")
 async def get_reputation_score(ethereum_address: str):
-    df = pd.read_csv("./addr_pageranks.csv")
-    score_row = df[df.addr == ethereum_address]
-    if score_row.empty:
-        return None
-    score = score_row.iloc[0]['score']
-    return score
+    url = "https://api.harpie.io/v2/validateAddress"
+    headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+    }
+    data = {
+        'apiKey': 'd90dd5df-8a5b-44e5-a419-b754431ea614',
+        'address': ethereum_address
+    }
+
+    response = requests.post(url, headers=headers, data=json.dumps(data))
+    isMaliciousAddress = response.json()['isMaliciousAddress']
+
+    return isMaliciousAddress
 
 if __name__ == "__main__":
     import uvicorn

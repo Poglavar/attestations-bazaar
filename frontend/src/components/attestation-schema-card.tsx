@@ -17,6 +17,8 @@ const human_mapping: { [key: string]: string } = {
     'Subject is unencumbered',
   '0x2a8579c182fc9c021be463079da9fddca39b71b74c0a2393240c678fff22cf7b':
     'Subject is freehold',
+  '0x3332c20b868cfec107e66c3a23f84a415b2a4f00eadf0db04f3c566481c3d2ef':
+    'Subject is not on protected area',
 }
 
 const schemaId: string = "0xe6d493be74347a2dd3d95e783fdfa35c164dc7b6571f7c5601fa9895b6caa333";

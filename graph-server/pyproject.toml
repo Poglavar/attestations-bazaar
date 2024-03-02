@@ -13,6 +13,8 @@ pydantic = "^2.6.3"
 matplotlib = "^3.8.3"
 networkx = "^3.2.1"
 uvicorn = "^0.27.1"
+requests = "^2.31.0"
+fastapi-cache2 = "^0.2.1"
 
 
 [build-system]
