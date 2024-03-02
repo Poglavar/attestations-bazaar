@@ -21,9 +21,18 @@ export const GET_RECIPES = gql`
     }
   }
 `
-export const processRecipes = (
-  recipes: Array<{ decodedDataJson: string } & Record<string, any>>
-) => {
+
+interface Recipe {
+  id: string
+  attester: string
+  recipient: string
+  refUID?: string 
+  decodedDataJson: string
+  expectedOutcome?: any 
+  schemaIds?: any[] 
+}
+
+export const processRecipes = (recipes: Recipe[]): Recipe[] => {
   return recipes.map((recipe) => {
     let decodedData
     try {
