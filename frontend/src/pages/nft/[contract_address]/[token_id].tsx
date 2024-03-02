@@ -8,7 +8,7 @@ const NFTPage = () => {
   const { contract_address, token_id } = router.query
   const [nft, setNft] = useState(null)
 
-  useEffect(() => {
+  const recipes = useEffect(() => {
     if (!contract_address || !token_id) return
 
     const config = {
@@ -37,9 +37,7 @@ const NFTPage = () => {
     return <div>Loading...</div>
   }
 
-  return (
-    <NFTDetailPage nft={nft} />
-  )
+  return <NFTDetailPage nft={nft} />
 }
 
 export default NFTPage

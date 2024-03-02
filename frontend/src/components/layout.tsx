@@ -13,10 +13,10 @@ export default function Layout({ children }) {
         <Logo />
         <MainNav />
         <hr />
-        <BackgroundGradient className="rx mx-auto flex grid min-h-screen w-screen max-w-7xl rounded-[22px]  shadow-2xl bg-ebony-950 overflow-hidden p-4 sm:p-6 lg:p-8">
+        <BackgroundGradient className="rx mx-auto flex grid min-h-screen w-screen max-w-7xl overflow-hidden  rounded-[22px] bg-ebony-950 p-4 shadow-2xl sm:p-6 lg:p-8">
           {children}
         </BackgroundGradient>
-{/* 
+        {/* 
         <LampContainer>
           <motion.h1
             initial={{ opacity: 0.5, y: 100 }}

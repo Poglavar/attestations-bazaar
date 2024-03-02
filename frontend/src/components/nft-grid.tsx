@@ -66,6 +66,5 @@ export default function NFTGrid() {
         </TabsContent>
       ))}
     </Tabs>
-    
   )
 }

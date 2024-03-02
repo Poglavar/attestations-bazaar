@@ -6,7 +6,7 @@ export default function Document() {
     <Html lang="en">
       <Head title="Dolphin Protocol" />
 
-      <body >
+      <body>
         <ThemeProvider attribute="class" defaultTheme="system">
           <Main />
           <NextScript />

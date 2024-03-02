@@ -76,13 +76,15 @@
   }
 }
 
-
 .background {
   background-color: #000118;
   opacity: 1;
-  background-image: radial-gradient(#7e029d 1.35px, transparent 1.35px), radial-gradient(#7e029d 1.35px, #000118 1.35px);
+  background-image: radial-gradient(#7e029d 1.35px, transparent 1.35px),
+    radial-gradient(#7e029d 1.35px, #000118 1.35px);
   background-size: 54px 54px;
-  background-position: 0 0, 27px 27px;
+  background-position:
+    0 0,
+    27px 27px;
 }
 
 .containerx {

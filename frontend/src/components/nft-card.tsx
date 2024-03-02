@@ -2,6 +2,7 @@ import React from 'react'
 import Image from 'next/image'
 import { CardItem, CardBody, CardContainer } from './ui/3d-card'
 import { truncate } from '@/utils/truncate'
+import Link from 'next/link'
 
 const NFTCard = ({ nft }) => {
   return (
@@ -35,7 +36,9 @@ const NFTCard = ({ nft }) => {
             as="button"
             className="rounded-xl px-4 py-2 text-xs font-normal dark:text-white"
           >
-            View Attestations →
+            <Link href={`/nft/${nft.contract.address}/${nft.tokenId}`}>
+              View Attestations →
+            </Link>
           </CardItem>
           <CardItem
             translateZ={20}

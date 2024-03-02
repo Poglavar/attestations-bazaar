@@ -14,9 +14,7 @@ function NFTDetailPage({ nft }) {
   } = nft
 
   const recipes = {
-    'US Real Estate': [{
-        
-    }]
+    'US Real Estate': [{}],
   }
 
   return (

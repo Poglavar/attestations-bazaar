@@ -9,7 +9,7 @@ import Link from 'next/link'
 
 export default function MainNav() {
   return (
-    <header className=" py-2 sm:py-4 mb-8">
+    <header className=" mb-8 py-2 sm:py-4">
       <NavigationMenu className="flex-cols items-between flex w-screen max-w-7xl">
         <NavigationMenuList>
           <Link href="/attestations" legacyBehavior passHref>
