@@ -3,8 +3,8 @@ import { ethers } from 'ethers';
 import { getSchemaRecord } from './schema.js';
 import 'dotenv/config';
 
-async function createAttestation(schemaUID, encodeDataItems, recipient, expirationTime,
-                                 revocable, referencedAttestationUID) {
+export async function createAttestation(schemaUID, encodeDataItems, recipient, expirationTime,
+                                        revocable, referencedAttestationUID, private_key) {
     try {
         const schemaInfo = await getSchemaRecord(schemaUID);
 
@@ -13,7 +13,8 @@ async function createAttestation(schemaUID, encodeDataItems, recipient, expirati
             "sepolia"
         )
         const signer = new ethers
-            .Wallet(process.env.ATTEST_PRIV_KEY,
+            //.Wallet(process.env.ATTEST_PRIV_KEY,
+            .Wallet(private_key,
                 provider);
         const eas = new EAS(easContractAddress).connect(signer);
 
@@ -59,6 +60,6 @@ const dataItems = [
     {name: 'voteIndex', value: 2, type: 'int256'},
 ];
 
-createAttestation('0x50e562002c209091c649e3ba5d6a89cad7b790a32cc235cfda5ea13b064b033c', dataItems, '', 0, false)
+createAttestation('0x50e562002c209091c649e3ba5d6a89cad7b790a32cc235cfda5ea13b064b033c', dataItems, '', 0, false, '', '')
     .then(newAttestationUID => console.log(`Attestation created with UID: ${newAttestationUID}`))
     .catch(error => console.error("Failed to create attestation:", error));
