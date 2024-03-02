@@ -11,8 +11,8 @@ const allSchemas = [
     "string MY_NAME_IS",
     "bool THIS_ATTESTATION_IS_TRUE",
     // Land
-    "bool IS_IN_NATURE_RESERVE,string SUPPORTING_URL,string TARGET_CHAIN,string TARGET_CONTRACT,string TARGET_ID",
-    "bool IS_BUILDING_PERMITTED,string SUPPORTING_URL,string TARGET_CHAIN,string TARGET_CONTRACT,string TARGET_ID",
+    "bool IS_IN_NATURE_RESERVE,string SUPPORTING_URL,string TARGET_CHAIN,string TARGET_ADDRESS,string TARGET_ID",
+    "bool IS_BUILDING_PERMITTED,string SUPPORTING_URL,string TARGET_CHAIN,string TARGET_ADDRESS,string TARGET_ID",
     // Marketplace
     "bytes32 I_WILL_PAY_FOR_SUID,uint256 AMOUNT,string CURRENCY,string TARGET_CHAIN,string TARGET_ADDRESS,string TARGET_ID",
     "bytes32 I_WILL_DO_SUID,uint256 AMOUNT,string CURRENCY,string TARGET_CHAIN,string TARGET_ADDRESS,string TARGET_ID",
