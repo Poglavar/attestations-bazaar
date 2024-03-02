@@ -26,10 +26,10 @@ interface Recipe {
   id: string
   attester: string
   recipient: string
-  refUID?: string 
+  refUID?: string
   decodedDataJson: string
-  expectedOutcome?: any 
-  schemaIds?: any[] 
+  expectedOutcome?: any
+  schemaIds?: any[]
 }
 
 export const processRecipes = (recipes: Recipe[]): Recipe[] => {

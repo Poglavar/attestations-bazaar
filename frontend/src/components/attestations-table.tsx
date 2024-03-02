@@ -77,9 +77,6 @@ const AttestationsTable = ({
     }
   }, [data, tokenIdFilter])
 
-
-  
-
   console.log(data)
 
   if (loading) return <p>Loading...</p>
