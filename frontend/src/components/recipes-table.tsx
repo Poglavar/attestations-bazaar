@@ -10,6 +10,9 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { truncateAddress } from '@/utils/truncate'
+import { GlowingStarsBackgroundCard, GlowingStarsDescription, GlowingStarsTitle, Icon } from './ui/glowing-stars'
+import { id } from 'ethers/lib/utils'
+import Link from 'next/link'
 
 const GET_RECIPES = gql`
   query Recipes($take: Int!, $skip: Int!, $schemaId: String!) {
@@ -62,29 +65,23 @@ const RecipesTable = () => {
 
   return (
     <div>
-      <Table className="min-w-full">
-        <TableCaption>Attestations</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead>ID</TableHead>
-            <TableHead>Attester</TableHead>
-            <TableHead>Recipient</TableHead>
-            <TableHead>Expected Outcome</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {data?.attestations.map(
-            ({ id, attester, recipient, decodedDataJson }) => (
-              <TableRow key={id}>
-                <TableCell>{id}</TableCell>
-                <TableCell>{truncateAddress(attester)}</TableCell>
-                <TableCell>{truncateAddress(recipient)}</TableCell>
-                <TableCell>{parseExpectedOutcome(decodedDataJson)}</TableCell>
-              </TableRow>
-            )
-          )}
-        </TableBody>
-      </Table>
+      {data?.attestations.map(
+        ({ id, attester, recipient, decodedDataJson }) => (
+          <GlowingStarsBackgroundCard key={id}>
+            <GlowingStarsTitle>{truncateAddress(attester)}</GlowingStarsTitle>
+            <div className="flex items-end justify-between">
+              <GlowingStarsDescription>
+                {parseExpectedOutcome(decodedDataJson)}
+              </GlowingStarsDescription>
+                <Link href={`/recipes/${id}`}>
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[hsla(0,0%,100%,.1)]">
+                  <Icon />
+              </div>
+                </Link>
+            </div>
+          </GlowingStarsBackgroundCard>
+        )
+      )}
       <div className="mt-4 flex justify-between">
         <button
           onClick={() => setPage(page - 1)}
