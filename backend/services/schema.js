@@ -20,27 +20,17 @@ const allSchemas = [
     "bytes32 I_CONFIRM_DONE_AUID,uint8 REVIEW_SCORE,string REVIEW_TEXT" // (recipient should be same as target AUID creator)
 ]
 
-const schemaRegistryContractAddress = "0x0a7E2Ff54e76B8E6659aedc9103FB21c038050D0";
-const schemaRegistry = new SchemaRegistry(schemaRegistryContractAddress);
-
-const provider = new ethers.JsonRpcProvider("https://eth-sepolia.g.alchemy.com/v2/0FXAwHoHh0CzpFUTD0e_OFr-RAoA1Xue");
-export async function registerSchema() {
+export async function registerSchema(connectedSchemaRegistry, schema, revocable = true, resolverAddress = null) {
     try {
-        // Initialize provider and signer
-        const signer = new ethers.Wallet(process.env.FROM_PRIV_KEY, provider);
-        const connectedSchemaRegistry = schemaRegistry.connect(signer);
-
         // Initialize SchemaEncoder with the schema string
-        const schema = "int256 test2Id, int256 voteIndex";
-        const resolverAddress = "0x0a7E2Ff54e76B8E6659aedc9103FB21c038050D0"; // Sepolia 0.26
-        const revocable = false; // A flag allowing an attestation to be revoked
-
+        // const schema = "int256 test2Id, int256 voteIndex";
+        // const resolverAddress = "0x0a7E2Ff54e76B8E6659aedc9103FB21c038050D0"; // Ethereum Sepolia 0.26
+        // const revocable = true; // A flag allowing an attestation to be revoked
         const transaction = await connectedSchemaRegistry.register({
             schema,
             revocable,
             resolverAddress
-        }, { gasLimit: 100000 });
-
+        }, { gasLimit: 200000 });
         // Wait for transaction to be validated
         await transaction.wait();
         console.log("New Schema Created", transaction.hash);
@@ -63,5 +53,13 @@ export async function getSchemaRecord(schemaUID) {
 //     console.log(schemaInfo);
 // });
 
-registerSchema();
+const main = async () => {
+    const provider = new ethers.JsonRpcProvider("https://base-sepolia.g.alchemy.com/v2/0FXAwHoHh0CzpFUTD0e_OFr-RAoA1Xue");
+    const schemaRegistryContractAddress = "0x0a7E2Ff54e76B8E6659aedc9103FB21c038050D0";
+    const schemaRegistry = new SchemaRegistry(schemaRegistryContractAddress);
+    const signer = new ethers.Wallet(process.env.FROM_PRIV_KEY, provider);
+    const connectedSchemaRegistry = schemaRegistry.connect(signer);
+    await registerSchema(connectedSchemaRegistry, allSchemas[1]);
+}
 
+main();
