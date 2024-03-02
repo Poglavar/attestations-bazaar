@@ -1,49 +1,72 @@
 import React, { useEffect, useState } from 'react'
-import { Alchemy, Network, OwnedNft } from 'alchemy-sdk'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import NFTCard from './nft-card'
+import { Core } from '@quicknode/sdk'
 
-const organizeNFTsByCollection = (nfts: OwnedNft[]) => {
-  return nfts.reduce<Record<string, OwnedNft[]>>((acc, nft) => {
-    if (nft.collection && nft.image && nft.image.originalUrl) {
-      const collectionName = nft.collection.name
-      if (!acc[collectionName]) {
-        acc[collectionName] = []
-      }
-      acc[collectionName].push(nft)
+interface OrganizedTokens {
+  [collectionName: string]: Token[]
+}
+
+const organizeNFTsByCollection = (tokens: Token[]) => {
+  return tokens.reduce((accumulator: OrganizedTokens, currentToken: Token) => {
+    const { collectionName } = currentToken
+    if (!accumulator[collectionName]) {
+      accumulator[collectionName] = []
     }
-    return acc
+    accumulator[collectionName].push(currentToken)
+
+    return accumulator
   }, {})
 }
 
 export default function NFTGrid() {
-  const [nfts, setNFTs] = useState<Record<string, OwnedNft[]>>({})
+  const [nfts, setNFTs] = useState<OrganizedTokens>({})
+
+  const core = new Core({
+    endpointUrl:
+      'https://blissful-floral-borough.quiknode.pro/c03e6f34faadc15ae0e7d069b62b248e28e23257/',
+    config: {
+      addOns: {
+        nftTokenV2: true,
+      },
+    },
+  })
+
+  // Define your collections here
+  const collections = [
+    '0x5cbeb7a0df7ed85d82a472fd56d81ed550f3ea95',
+    '0xbd3531da5cf5857e7cfaa92426877b022e612cf8',
+    '0x1e988ba4692e52bc50b375bcc8585b95c48aad77',
+    '0x524cab2ec69124574082676e6f654a18df49a048',
+    '0x5946aeaab44e65eb370ffaa6a7ef2218cff9b47d',
+  ]
 
   useEffect(() => {
-    const config = {
-      apiKey: 'alcht_O8c5T30AkUyXtUmd2DGhuCsBQv4AKV',
-      network: Network.ETH_MAINNET,
-    }
-    const alchemy = new Alchemy(config)
-
-    async function fetchNFTs() {
+    async function fetchNFTsForCollection(collection: string) {
       try {
-        const ownerAddress = '0xFCaAAB590fC876ef9be2D00178e9C78A4Edab825' // Replace with the actual owner address
-        const { ownedNfts } = await alchemy.nft.getNftsForOwner(ownerAddress)
-        const filteredNfts = ownedNfts.filter(
-          (nft) =>
-            nft.image &&
-            nft.image.originalUrl &&
-            nft.image.contentType?.includes('image')
-        )
-        setNFTs(organizeNFTsByCollection(filteredNfts))
-        console.log(filteredNfts)
+        const res = await core.client.qn_fetchNFTsByCollection({ collection })
+        return res.tokens || []
       } catch (error) {
-        console.error('Failed to fetch NFTs:', error)
+        console.error('Error fetching NFTs for collection:', collection, error)
+        return []
       }
     }
 
-    fetchNFTs()
+    async function fetchAndOrganizeNFTs() {
+      try {
+        const allNFTsPromises = collections.map(fetchNFTsForCollection)
+        const allNFTsResults = await Promise.all(allNFTsPromises)
+
+        const allNFTs = allNFTsResults.flat().filter((nft) => nft.imageUrl)
+
+        const organizedNFTs = organizeNFTsByCollection(allNFTs)
+        setNFTs(organizedNFTs)
+      } catch (error) {
+        console.error('Error fetching or organizing NFTs:', error)
+      }
+    }
+
+    fetchAndOrganizeNFTs()
   }, [])
 
   return (
@@ -67,4 +90,30 @@ export default function NFTGrid() {
       ))}
     </Tabs>
   )
+}
+
+export interface NFTResults {
+  collection: string
+  tokens: Token[]
+  totalPages: number
+  pageNumber: number
+  totalItems: number
+}
+
+export interface Token {
+  collectionName: string
+  collectionAddress: string
+  collectionTokenId: string
+  description: string
+  name: string
+  imageUrl: string
+  traits: Trait[]
+  chain: string
+  network: string
+}
+
+export interface Trait {
+  value: number | string
+  trait_type: string
+  display_type?: string
 }

@@ -23,7 +23,7 @@ const NFTCard = ({ nft }: { nft: any }) => {
         </CardItem>
         <CardItem translateZ="100" className="mt-4 overflow-hidden">
           <Image
-            src={nft.image.originalUrl}
+            src={nft.imageUrl}
             height="1000"
             width="1000"
             className="max-w-200 h-60 rounded-xl object-cover group-hover/card:shadow-xl"
@@ -36,7 +36,9 @@ const NFTCard = ({ nft }: { nft: any }) => {
             as="button"
             className="rounded-xl px-4 py-2 text-xs font-normal dark:text-white"
           >
-            <Link href={`/nft/${nft.contract.address}/${nft.tokenId}`}>
+            <Link
+              href={`/nft/${nft.collectionAddress}/${nft.collectionTokenId}`}
+            >
               View Attestations →
             </Link>
           </CardItem>
@@ -45,7 +47,7 @@ const NFTCard = ({ nft }: { nft: any }) => {
             as="button"
             className="rounded-xl bg-black px-4 py-2 text-xs font-bold text-white dark:bg-white dark:text-black"
           >
-            {nft.contract.tokenType}
+            {nft.chain}
           </CardItem>
         </div>
       </CardBody>
