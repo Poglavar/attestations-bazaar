@@ -3,7 +3,7 @@ import NFTCard from './nft-card'
 // Import Shadcn components or your preferred UI library components
 // import { Card, Tabs, TabList, Tab, TabPanels, TabPanel, Button } from 'shadcn'
 
-function NFTDetailPage({ nft }) {
+function NFTDetailPage({ nft }: { nft: any }) {
   // This data should be replaced with actual NFT data passed as props or fetched from an API
   const {
     contractAddress,

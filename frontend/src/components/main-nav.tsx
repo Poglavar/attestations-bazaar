@@ -22,7 +22,7 @@ export default function MainNav() {
               Requests
             </NavigationMenuLink>
           </Link>
-          <Link href="/portfolio" legacyBehavior passHref>
+          <Link href="/" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
               Portfolio
             </NavigationMenuLink>

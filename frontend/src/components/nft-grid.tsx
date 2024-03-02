@@ -4,8 +4,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import NFTCard from './nft-card'
 
 const organizeNFTsByCollection = (nfts: OwnedNft[]) => {
-  return nfts.reduce((acc, nft) => {
-    if (nft.image && nft.image.originalUrl) {
+  return nfts.reduce<Record<string, OwnedNft[]>>((acc, nft) => {
+    if (nft.collection && nft.image && nft.image.originalUrl) {
       const collectionName = nft.collection.name
       if (!acc[collectionName]) {
         acc[collectionName] = []
@@ -66,13 +66,6 @@ export default function NFTGrid() {
         </TabsContent>
       ))}
     </Tabs>
-    // <div className="p-4">
-    //   <h2 className="mb-4 ml-4 text-2xl font-bold">NFTs in Wallet</h2>
-    //   <div className="grid grid-cols-3 gap-4">
-    //     {nfts.map((nft, index) => (
-    //       <NFTCard key={index} nft={nft} />
-    //     ))}
-    //   </div>
-    // </div>
+   
   )
 }
