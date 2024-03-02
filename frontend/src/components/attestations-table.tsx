@@ -10,10 +10,17 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { truncateAddress } from '@/utils/truncate'
+import Link from 'next/link'
+import { randomInt } from 'crypto'
 
 const GET_ATTESTATIONS = gql`
-  query Attestations($take: Int!, $skip: Int!) {
-    attestations(take: $take, skip: $skip, orderBy: { time: desc }) {
+  query Attestations($take: Int!, $skip: Int!, $recipient: String) {
+    attestations(
+      take: $take
+      skip: $skip
+      where: { recipient: { equals: $recipient } }
+      orderBy: { time: desc }
+    ) {
       id
       attester
       recipient
@@ -26,13 +33,23 @@ const GET_ATTESTATIONS = gql`
   }
 `
 
-const AttestationsTable = () => {
+const AttestationsTable = ({
+  recipientFilter,
+}: {
+  recipientFilter?: string
+}) => {
   const itemsPerPage = 25
   const [page, setPage] = useState(0)
-
+  console.log(recipientFilter)
   const { loading, error, data } = useQuery(GET_ATTESTATIONS, {
-    variables: { take: itemsPerPage, skip: page * itemsPerPage },
+    variables: {
+      take: itemsPerPage,
+      skip: page * itemsPerPage,
+      ...(recipientFilter && { recipient: recipientFilter }),
+    },
   })
+
+  console.log(data)
 
   if (loading) return <p>Loading...</p>
   if (error) return <p>Error :(</p>
@@ -40,22 +57,29 @@ const AttestationsTable = () => {
   return (
     <div>
       <Table className="min-w-full">
-        <TableCaption>Attestations</TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead>ID</TableHead>
             <TableHead>Attester</TableHead>
             <TableHead>Recipient</TableHead>
+            <TableHead>Reputation</TableHead>
             {/* Add other headers as needed */}
           </TableRow>
         </TableHeader>
         <TableBody>
           {data.attestations.map(({ id, attester, recipient }) => (
             <TableRow key={id}>
-              <TableCell>{id}</TableCell>
+              <TableCell>
+                <Link
+                  href={`https://sepolia.easscan.org/schema/view/${id}`}
+                  target="_blank"
+                >
+                  {truncateAddress(id)}
+                </Link>
+              </TableCell>
               <TableCell>{truncateAddress(attester)}</TableCell>
               <TableCell>{truncateAddress(recipient)}</TableCell>
-              {/* Add other data columns as needed */}
+              <TableCell>{Math.floor(Math.random()*100)}</TableCell>
             </TableRow>
           ))}
         </TableBody>

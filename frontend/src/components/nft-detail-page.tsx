@@ -2,6 +2,11 @@ import React from 'react'
 import Image from 'next/image'
 import { CardBody, CardContainer, CardItem } from '@/components/ui/3d-card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { useQuery } from '@apollo/client'
+import { GET_RECIPES, processRecipes } from '@/queries/GET_RECIPES'
+import { truncateAddress } from '@/utils/truncate'
+import AttestationsSchemaCard from './attestation-schema-card'
+import AttestationsTable from './attestations-table'
 
 function NFTDetailPage({ nft }) {
   const {
@@ -13,14 +18,17 @@ function NFTDetailPage({ nft }) {
     pendingAttestations,
   } = nft
 
-  const recipes = {
-    'US Real Estate': [{}],
-  }
+  const { loading, error, data } = useQuery(GET_RECIPES);
+  if (loading) return <p>Loading...</p>
+  if (error) return <p>Error :(</p>
+  const recipes = processRecipes(data["attestations"])
+  console.log(recipes)
+    console.log(nft)
+
 
   return (
-    <div className="container mx-auto my-8 p-4">
-      <div className="flex flex-col md:flex-row">
-        <div className="md:w-1/2">
+      <div className="flex flex-col md:flex-row w-full">
+        <div className="md:w-1/3">
           <h1 className="mb-4 text-2xl font-bold text-neutral-600 dark:text-white">
             {nft.name}
           </h1>
@@ -42,28 +50,39 @@ function NFTDetailPage({ nft }) {
           </p>
         </div>
 
-        <div className="md:ml-8 md:w-1/2">
+        <div className="md:ml-8 md:w-2/3">
           <h2 className="mb-4 text-xl font-bold text-neutral-600 dark:text-white">
-            Completed Attestations
+            Recipes
           </h2>
           <Tabs defaultValue="all" className="w-full p-4">
             <TabsList className="mx-auto my-4 w-full bg-transparent">
-              {Object.keys(recipes).map((recipe) => (
+              {recipes.map(({ expectedOutcome: recipe }) => (
                 <TabsTrigger key={recipe} value={recipe}>
                   {recipe}
                 </TabsTrigger>
               ))}
             </TabsList>
 
-            {Object.entries(recipes).map(([recipe, attestations]) => (
-              <TabsContent key={recipe} value={recipe}>
-                {attestations.toString()}
+            {recipes.map(({ expectedOutcome, schemaIds = [] }) => (
+              <TabsContent
+                key={expectedOutcome}
+                value={expectedOutcome}
+                className="space-y-4"
+              >
+                {schemaIds.map((schemaId: string) => (
+                  <AttestationsSchemaCard key={schemaId} schemaId={schemaId} />
+                ))}
               </TabsContent>
             ))}
           </Tabs>
+
+          <h2 className="my-4 text-xl font-bold text-neutral-600 dark:text-white">
+            Attestations
+          </h2>
+          
+          <AttestationsTable recipientFilter={nft.contract.address} />
         </div>
       </div>
-    </div>
   )
 }
 
