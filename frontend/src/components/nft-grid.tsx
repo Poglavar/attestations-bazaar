@@ -4,7 +4,7 @@ import NFTCard from './nft-card'
 import { Core } from '@quicknode/sdk'
 
 interface OrganizedTokens {
-  [collectionName: string]: Token[] 
+  [collectionName: string]: Token[]
 }
 
 const organizeNFTsByCollection = (tokens: Token[]) => {
@@ -16,58 +16,58 @@ const organizeNFTsByCollection = (tokens: Token[]) => {
     accumulator[collectionName].push(currentToken)
 
     return accumulator
-  }, {}) 
+  }, {})
 }
 
 export default function NFTGrid() {
-   const [nfts, setNFTs] = useState<OrganizedTokens>({})
+  const [nfts, setNFTs] = useState<OrganizedTokens>({})
 
-   const core = new Core({
-     endpointUrl:
-       'https://blissful-floral-borough.quiknode.pro/c03e6f34faadc15ae0e7d069b62b248e28e23257/',
-     config: {
-       addOns: {
-         nftTokenV2: true,
-       },
-     },
-   })
+  const core = new Core({
+    endpointUrl:
+      'https://blissful-floral-borough.quiknode.pro/c03e6f34faadc15ae0e7d069b62b248e28e23257/',
+    config: {
+      addOns: {
+        nftTokenV2: true,
+      },
+    },
+  })
 
-   // Define your collections here
-   const collections = [
-     '0x5cbeb7a0df7ed85d82a472fd56d81ed550f3ea95',
-     '0xbd3531da5cf5857e7cfaa92426877b022e612cf8',
-     '0x1e988ba4692e52bc50b375bcc8585b95c48aad77',
-     '0x524cab2ec69124574082676e6f654a18df49a048',
-     '0x5946aeaab44e65eb370ffaa6a7ef2218cff9b47d',
-   ]
+  // Define your collections here
+  const collections = [
+    '0x5cbeb7a0df7ed85d82a472fd56d81ed550f3ea95',
+    '0xbd3531da5cf5857e7cfaa92426877b022e612cf8',
+    '0x1e988ba4692e52bc50b375bcc8585b95c48aad77',
+    '0x524cab2ec69124574082676e6f654a18df49a048',
+    '0x5946aeaab44e65eb370ffaa6a7ef2218cff9b47d',
+  ]
 
-   useEffect(() => {
-     async function fetchNFTsForCollection(collection: string) {
-       try {
-         const res = await core.client.qn_fetchNFTsByCollection({ collection })
-         return res.tokens || []
-       } catch (error) {
-         console.error('Error fetching NFTs for collection:', collection, error)
-         return []
-       }
-     }
+  useEffect(() => {
+    async function fetchNFTsForCollection(collection: string) {
+      try {
+        const res = await core.client.qn_fetchNFTsByCollection({ collection })
+        return res.tokens || []
+      } catch (error) {
+        console.error('Error fetching NFTs for collection:', collection, error)
+        return []
+      }
+    }
 
-     async function fetchAndOrganizeNFTs() {
-       try {
-         const allNFTsPromises = collections.map(fetchNFTsForCollection)
-         const allNFTsResults = await Promise.all(allNFTsPromises)
+    async function fetchAndOrganizeNFTs() {
+      try {
+        const allNFTsPromises = collections.map(fetchNFTsForCollection)
+        const allNFTsResults = await Promise.all(allNFTsPromises)
 
-         const allNFTs = allNFTsResults.flat().filter((nft) => nft.imageUrl)
+        const allNFTs = allNFTsResults.flat().filter((nft) => nft.imageUrl)
 
-         const organizedNFTs = organizeNFTsByCollection(allNFTs)
-         setNFTs(organizedNFTs)
-       } catch (error) {
-         console.error('Error fetching or organizing NFTs:', error)
-       }
-     }
+        const organizedNFTs = organizeNFTsByCollection(allNFTs)
+        setNFTs(organizedNFTs)
+      } catch (error) {
+        console.error('Error fetching or organizing NFTs:', error)
+      }
+    }
 
-     fetchAndOrganizeNFTs()
-   }, [])
+    fetchAndOrganizeNFTs()
+  }, [])
 
   return (
     <Tabs defaultValue="all" className="w-full p-4">
@@ -117,4 +117,3 @@ export interface Trait {
   trait_type: string
   display_type?: string
 }
-

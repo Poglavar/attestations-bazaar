@@ -22,14 +22,15 @@ const NFTPage = () => {
     })
 
     async function fetchNFT() {
-      if (typeof contract_address !== 'string' || typeof token_id !== 'string') return;
+      if (typeof contract_address !== 'string' || typeof token_id !== 'string')
+        return
       try {
         const response = await core.client.qn_fetchNFTsByCollection({
           collection: contract_address,
           tokens: [token_id],
         })
         if (response.tokens && response.tokens.length > 0) {
-          setNft(response.tokens[0]) 
+          setNft(response.tokens[0])
         }
       } catch (error) {
         console.error('Failed to fetch NFT:', error)
