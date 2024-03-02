@@ -87,4 +87,4 @@ const main = async () => {
 
 main()
 
-// generateAccounts(200, 'eth_accounts.txt');
+// generateAccounts(200, 'eth_accounts.json');

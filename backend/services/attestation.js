@@ -3,7 +3,7 @@ import { ethers } from 'ethers';
 import { getSchemaRecord } from './schema.js';
 import 'dotenv/config';
 
-export async function createAttestation(schemaUID, encodeDataItems, recipient, expirationTime,
+export async function createAttestation(schemaUID, encodeDataItems, schemaEncodeData, recipient, expirationTime,
                                         revocable, referencedAttestationUID, private_key) {
     try {
         const schemaInfo = await getSchemaRecord(schemaUID);
@@ -13,14 +13,13 @@ export async function createAttestation(schemaUID, encodeDataItems, recipient, e
             "sepolia"
         )
         const signer = new ethers
-            //.Wallet(process.env.ATTEST_PRIV_KEY,
             .Wallet(private_key,
                 provider);
         const eas = new EAS(easContractAddress).connect(signer);
 
 
         // Encode attestation data
-        const schemaEncoder = new SchemaEncoder('int256 test1Id, int256 voteIndex');
+        const schemaEncoder = new SchemaEncoder(schemaEncodeData);
         const encodedData = schemaEncoder.encodeData(
             encodeDataItems.map(item => ({
                 name: item.name,

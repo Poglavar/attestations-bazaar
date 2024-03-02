@@ -15,4 +15,4 @@ docs/
 
 node_modules
 
-/bootstrap/eth_accounts.txt
+/bootstrap/eth_accounts.json
