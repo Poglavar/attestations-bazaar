@@ -24,7 +24,7 @@ export default function NFTGrid() {
 
   const core = new Core({
     endpointUrl:
-      'https://blissful-floral-borough.quiknode.pro/c03e6f34faadc15ae0e7d069b62b248e28e23257/',
+      'https://powerful-autumn-fog.quiknode.pro/da003dc031d0468f868c9b20391a5cbe8873f213/',
     config: {
       addOns: {
         nftTokenV2: true,
