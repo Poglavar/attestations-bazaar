@@ -95,3 +95,33 @@
   border-radius: 10px;
   border: 1px solid rgba(8, 6, 8, 0.18);
 }
+
+.header-banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 40px;
+  width: 100vw;
+  background-color: #222;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+
+}
+
+.header-banner span {
+  color: red;
+}
+
+.header-banner a {
+  color: skyblue;
+  text-decoration: none;
+  text-decoration: underline;
+  margin-left: 0.4rem;
+}

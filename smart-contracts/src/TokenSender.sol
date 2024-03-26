@@ -27,9 +27,10 @@ contract TokenSender is SchemaResolver {
         // Amount will be arriving in the data field with the structure:
         // bytes32 I_CONFIRM_DONE_AUID,uint8 REVIEW_SCORE,string REVIEW_TEXT
         // so we need to decode it to get the amount
-        (bytes32 auid, uint8 score, string memory review) = abi.decode(attestation.data, (bytes32, uint8, string));
-        Attestation memory targetAttestation = _eas.getAttestation(auid);
-        _tokenEscrow.retrieveToken(auid, targetAttestation.recipient);
+        (bytes32 auid, address recipient, uint8 score, string memory review) =
+            abi.decode(attestation.data, (bytes32, address, uint8, string));
+        // Attestation memory targetAttestation = _eas.getAttestation(auid);
+        _tokenEscrow.retrieveToken(auid, recipient);
         return true;
     }
 
