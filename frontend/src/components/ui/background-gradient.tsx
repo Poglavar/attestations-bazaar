@@ -22,7 +22,7 @@ export const BackgroundGradient = ({
     },
   }
   return (
-    <div className={cn('group relative p-[4px]', containerClassName)}>
+    <div className={cn('panel-gradient', containerClassName)}>
       <motion.div
         variants={animate ? variants : undefined}
         initial={animate ? 'initial' : undefined}
@@ -35,13 +35,10 @@ export const BackgroundGradient = ({
                 repeatType: 'reverse',
               }
             : undefined
-        }
-        style={{
-          backgroundSize: animate ? '400% 400%' : undefined,
-        }}
+        } data-animated={animate || undefined}
         className={cn(
-          'absolute inset-0 z-[1] rounded-3xl opacity-60 blur-xl transition  duration-500 group-hover:opacity-100',
-          ' bg-[radial-gradient(circle_farthest-side_at_0_100%,#00ccb1,transparent),radial-gradient(circle_farthest-side_at_100%_0,#7b61ff,transparent),radial-gradient(circle_farthest-side_at_100%_100%,#ffc414,transparent),radial-gradient(circle_farthest-side_at_0_0,#1ca0fb,#141316)]'
+          'panel-gradient-glow',
+          'panel-gradient-fill'
         )}
       />
       <motion.div
@@ -56,17 +53,14 @@ export const BackgroundGradient = ({
                 repeatType: 'reverse',
               }
             : undefined
-        }
-        style={{
-          backgroundSize: animate ? '400% 400%' : undefined,
-        }}
+        } data-animated={animate || undefined}
         className={cn(
-          'absolute inset-0 z-[1] rounded-3xl',
-          'bg-[radial-gradient(circle_farthest-side_at_0_100%,#00ccb1,transparent),radial-gradient(circle_farthest-side_at_100%_0,#7b61ff,transparent),radial-gradient(circle_farthest-side_at_100%_100%,#ffc414,transparent),radial-gradient(circle_farthest-side_at_0_0,#1ca0fb,#141316)]'
+          'panel-gradient-edge',
+          'panel-gradient-fill'
         )}
       />
 
-      <div className={cn('relative z-10', className)}>{children}</div>
+      <div className={cn('panel-gradient-content', className)}>{children}</div>
     </div>
   )
 }

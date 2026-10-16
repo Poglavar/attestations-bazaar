@@ -15,13 +15,13 @@ function NFTDetailPage({ nft }) {
   } = nft
 
   return (
-    <div className="container mx-auto my-8 p-4">
-      <div className="flex flex-col md:flex-row">
-        <div className="md:w-1/3">
+    <div className="detail-page">
+      <div className="detail-layout">
+        <div className="detail-preview">
           <NFTCard nft={nft} />
         </div>
 
-        <div className="md:ml-8 md:w-2/3">
+        <div className="detail-content">
           {/* Replace with Shadcn Tabs component */}
         </div>
       </div>

@@ -75,3 +75,73 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+/* Categories: navigation, tabs, asset cards, details and 3D card geometry.
+   Theme entrypoint: the semantic HSL variables in :root / .dark above. */
+.app-shell { @apply mx-auto flex min-h-screen max-w-7xl flex-col items-center justify-between; }
+.app-panel { @apply mx-auto grid min-h-screen w-screen max-w-7xl rounded-lg bg-card text-card-foreground shadow-2xl; }
+.app-header { @apply py-2 sm:py-6; }
+.app-nav { @apply flex w-screen max-w-7xl; }
+.asset-card { @apply relative h-auto w-auto rounded-xl border border-black/[0.1] bg-gray-50 p-6 dark:border-white/[0.2] dark:bg-black dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1]; }
+.card-title { @apply text-xl font-bold text-neutral-600 dark:text-white; }
+.card-description { @apply mt-2 max-w-sm text-sm text-neutral-500 dark:text-neutral-300; }
+.card-media { @apply mt-4 overflow-hidden; }
+.asset-image { @apply h-60 rounded-xl object-cover ; }
+.card-actions { @apply mt-6 flex items-center justify-between; }
+.card-action { @apply inline-flex rounded-xl px-4 py-2 text-xs font-normal dark:text-white; }
+.status-badge { @apply rounded-xl bg-black px-4 py-2 text-xs font-bold text-primary-foreground dark:bg-white dark:text-black; }
+.detail-page { @apply container mx-auto my-8 p-4; }
+.detail-layout { @apply flex flex-col md:flex-row; }
+.detail-preview { @apply md:w-1/3; }
+.detail-content { @apply md:ml-8 md:w-2/3; }
+.collection-tabs { @apply w-full p-4; }
+.collection-tab-list { @apply mx-auto my-4 w-full bg-transparent; }
+.asset-grid { @apply grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3; }
+.tabs-content { @apply mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2; }
+.tabs-trigger { @apply inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow; }
+.tabs-list { @apply inline-flex h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground; }
+.navigation-pointer { @apply relative top-[60%] h-2 w-2 rotate-45 rounded-tl-sm bg-border shadow-md; }
+.navigation-indicator { @apply top-full z-[1] flex h-1.5 items-end justify-center overflow-hidden data-[state=visible]:animate-in data-[state=hidden]:animate-out data-[state=hidden]:fade-out data-[state=visible]:fade-in; }
+.navigation-viewport { @apply origin-top relative mt-1.5 h-[var(--radix-navigation-menu-viewport-height)] w-full overflow-hidden rounded-md border bg-popover text-popover-foreground shadow data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-90 md:w-[var(--radix-navigation-menu-viewport-width)]; }
+.navigation-viewport-anchor { @apply absolute left-0 top-full flex justify-center; }
+.navigation-content { @apply left-0 top-0 w-full data-[motion^=from-]:animate-in data-[motion^=to-]:animate-out data-[motion^=from-]:fade-in data-[motion^=to-]:fade-out data-[motion=from-end]:slide-in-from-right-52 data-[motion=from-start]:slide-in-from-left-52 data-[motion=to-end]:slide-out-to-right-52 data-[motion=to-start]:slide-out-to-left-52 md:absolute md:w-auto; }
+.navigation-chevron { @apply relative top-[1px] ml-1 h-3 w-3 transition duration-300 group-data-[state=open]:rotate-180; }
+.navigation-trigger { @apply inline-flex h-9 w-max items-center justify-center rounded-md bg-primary px-4 py-2  text-primary-foreground text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50; }
+.navigation-list { @apply flex flex-1 list-none items-center justify-center space-x-1; }
+.navigation-menu { @apply relative z-10 flex max-w-max flex-1 items-center justify-between; }
+.card-item { @apply w-fit transition duration-200 ease-linear; }
+.card-body { @apply h-96 w-96 [transform-style:preserve-3d]  [&>*]:[transform-style:preserve-3d]; }
+.card-transform { @apply relative flex items-center justify-center transition-all duration-200 ease-linear; }
+.card-scene { @apply flex items-center justify-center py-2; }
+
+.card-scene { perspective: 1000px; }
+.card-transform { transform-style: preserve-3d; }
+
+}
+
+/* Decorative panel border; palette is owned by the theme. */
+:root { --panel-border-gradient: radial-gradient(circle farthest-side at 0 100%, #00ccb1, transparent), radial-gradient(circle farthest-side at 100% 0, #7b61ff, transparent), radial-gradient(circle farthest-side at 100% 100%, #ffc414, transparent), radial-gradient(circle farthest-side at 0 0, #1ca0fb, #141316); }
+.panel-gradient-fill { background-image: var(--panel-border-gradient); }
+.panel-gradient { @apply relative p-[4px]; }
+.panel-gradient-glow { @apply absolute inset-0 z-[1] rounded-3xl opacity-60 blur-xl transition  duration-500 group-hover:opacity-100; }
+.panel-gradient-edge { @apply absolute inset-0 z-[1] rounded-3xl; }
+.panel-gradient-content { @apply relative z-10; }
+.panel-gradient:hover .panel-gradient-glow { opacity: 1; }
+[data-animated="true"].panel-gradient-fill { background-size: 400% 400%; }
+
+/* Instance variants override shared primitive dimensions and surfaces. */
+.app-nav.navigation-menu { width: 100vw; max-width: 80rem; }
+.tabs-list.collection-tab-list { width: 100%; margin: 1rem auto; background: transparent; }
+.asset-card.card-body { height: auto; width: auto; }
+
+/* Navigation keeps its full links in a bounded scrolling strip on narrow screens. */
+.app-header { width: 100%; }
+.app-nav.navigation-menu { width: 100%; min-width: 0; flex-wrap: wrap; gap: .75rem; }
+.app-nav.navigation-menu > div:first-child { min-width: 0; max-width: 100%; overflow-x: auto; }
+.app-nav .navigation-list { width: max-content; justify-content: flex-start; }
+.app-nav.navigation-menu > button { max-width: 100%; }
+
+@media (max-width: 640px) {
+  .app-nav .navigation-list { width: 100%; flex-wrap: wrap; row-gap: .25rem; }
+}

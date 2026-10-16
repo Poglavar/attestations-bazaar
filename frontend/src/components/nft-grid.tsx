@@ -47,8 +47,8 @@ export default function NFTGrid() {
   }, [])
 
   return (
-    <Tabs defaultValue="all" className="w-full p-4">
-      <TabsList className="mx-auto my-4 w-full bg-transparent">
+    <Tabs defaultValue="all" className="collection-tabs">
+      <TabsList className="collection-tab-list">
         {Object.keys(nfts).map((collectionName) => (
           <TabsTrigger key={collectionName} value={collectionName}>
             {collectionName}
@@ -58,7 +58,7 @@ export default function NFTGrid() {
 
       {Object.entries(nfts).map(([collectionName, collectionNFTs]) => (
         <TabsContent key={collectionName} value={collectionName}>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+          <div className="asset-grid">
             {collectionNFTs.map((nft, index) => (
               <NFTCard key={index} nft={nft} />
             ))}

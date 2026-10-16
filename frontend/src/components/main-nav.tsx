@@ -9,8 +9,8 @@ import Link from 'next/link'
 
 export default function MainNav() {
   return (
-    <header className=" py-2 sm:py-6">
-      <NavigationMenu className="flex-cols items-between flex w-screen max-w-7xl">
+    <header className="app-header">
+      <NavigationMenu className="app-nav">
         <NavigationMenuList>
           <Link href="/attestations" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
